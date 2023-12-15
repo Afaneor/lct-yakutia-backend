@@ -22,7 +22,15 @@ class RequestStatus(models.TextChoices):
 
     OK = 'ok', _('Ок')
     ERROR = 'error', _('Ошибка')
-    REVISION = 'revision', _('Доработка')
+
+
+class MessageStatus(models.TextChoices):
+    """Статус сообщения."""
+
+    OK = 'ok', _('Данные сформирован хорошо')
+    ERROR = 'error', _('Ошибка при формировании данных')
+    REVISION = 'revision', _('Доработка сформированных данных')
+    UNDEFINED = 'undefined', _('Не определено')
 
 
 class MessageType(models.TextChoices):
@@ -40,3 +48,11 @@ class SuccessType(models.TextChoices):
     INTEREST = 'interest', _('Заинтересованность')
     NEGATIVE_REACTION = 'negative_reaction', _('Негативная реакция')
     POSITIVE_REACTION = 'positive_reaction', _('Позитивная реакция')
+    UNDEFINED = 'undefined', _('Не определено')
+
+
+class UserRoleInProject(models.TextChoices):
+    """Роль пользователя."""
+
+    MANAGER = 'manager', _('Руководитель')
+    PERFORMER = 'performer', _('Исполнитель')

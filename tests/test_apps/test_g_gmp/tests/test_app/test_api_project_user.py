@@ -7,26 +7,26 @@ fake = Faker()
 
 
 @pytest.mark.django_db()
-def test_client_format(
+def test_project_user_format(
     api_client,
-    client,
-    client_format,
+    project_user,
+    project_user_format,
 ):
-    """Формат Client."""
-    url = reverse('g-gmp:client-detail', [client.pk])
+    """Формат ProjectUser."""
+    url = reverse('g-mtg:project-user-detail', [project_user.pk])
 
     response = api_client.get(url)
 
     assert response.status_code == status.HTTP_200_OK
-    assert response == client_format(client)
+    assert response == project_user_format(project_user)
 
 
 @pytest.mark.django_db()
-def test_client_post(
+def test_project_user_post(
     api_client,
 ):
-    """Создание Client."""
-    url = reverse('g-gmp:client-list')
+    """Создание ProjectUser."""
+    url = reverse('g-mtg:project-user-list')
     response = api_client.post(
         url,
         data={},
@@ -37,9 +37,9 @@ def test_client_post(
 
 
 @pytest.mark.django_db()
-def test_client_delete(api_client, client):
-    """Удаление Client."""
-    url = reverse('g-gmp:client-detail', [client.pk])
+def test_project_user_delete(api_client, project_user):
+    """Удаление ProjectUser."""
+    url = reverse('g-mtg:project-user-detail', [project_user.pk])
 
     response = api_client.delete(url)
 
@@ -47,12 +47,12 @@ def test_client_delete(api_client, client):
 
 
 @pytest.mark.django_db()
-def test_client_change(
+def test_project_user_change(
     api_client,
-    client,
+    project_user,
 ):
-    """Изменение Client."""
-    url = reverse('api:g-gmp:client-detail', [client.pk])
+    """Изменение ProjectUser."""
+    url = reverse('api:g-mtg:project-user-detail', [project_user.pk])
 
     response = api_client.put(
         url,

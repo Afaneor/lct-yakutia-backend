@@ -10,7 +10,7 @@ from server.apps.user.api.serializers.password import (
 )
 from server.apps.user.api.serializers.register import RegisterSerializer
 from server.apps.user.api.serializers.user import (  # noqa: WPS235
-    BaseInfoUserSerializer,
+    BaseUserSerializer,
     UserSerializer,
 )
 
@@ -19,7 +19,7 @@ __all__ = [
     'ConfirmEmailRequestSerializer',
     'ConfirmEmailProcessSerializer',
     'RegisterSerializer',
-    'BaseInfoUserSerializer',
+    'BaseUserSerializer',
     'ChangePasswordSerializer',
     'ResetPasswordRequestSerializer',
     'ResetPasswordConfirmSerializer',

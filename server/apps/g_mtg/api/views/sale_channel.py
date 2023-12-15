@@ -1,15 +1,15 @@
 import django_filters
 
-from server.apps.g_mtg.api.serializers import ProductSerializer
-from server.apps.g_mtg.models import Product
+from server.apps.g_mtg.api.serializers.sale_channel import SaleChannelSerializer
+from server.apps.g_mtg.models import SaleChannel
 from server.apps.services.views import BaseReadOnlyViewSet
 
 
-class ProductFilter(django_filters.FilterSet):
+class SaleChannelFilter(django_filters.FilterSet):
     """Фильтр для клиента."""
 
     class Meta(object):
-        model = Product
+        model = SaleChannel
         fields = (
             'id',
             'name',
@@ -18,15 +18,15 @@ class ProductFilter(django_filters.FilterSet):
         )
 
 
-class ProductViewSet(BaseReadOnlyViewSet):
+class SaleChannelViewSet(BaseReadOnlyViewSet):
     """Продукт банка."""
 
-    serializer_class = ProductSerializer
-    queryset = Product.objects.all()
+    serializer_class = SaleChannelSerializer
+    queryset = SaleChannel.objects.all()
     ordering_fields = '__all__'
     search_fields = (
         'name',
         'key_name',
         'description',
     )
-    filterset_class = ProductFilter
+    filterset_class = SaleChannelFilter

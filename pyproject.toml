@@ -72,7 +72,7 @@ drf-yasg = "^1.21.5"   # https://github.com/axnsan12/drf-yasg/
 django-stubs = "^1.13"  # https://github.com/typeddjango/django-stubs
 rules = "^3.3"
 gdrfile = "^0.0.1"
-models = "^0.9.3"
+pylightxl = "^1.61"
 
 [tool.poetry.dev-dependencies]
 django-coverage-plugin = "^3.0"  # https://github.com/nedbat/django_coverage_plugin

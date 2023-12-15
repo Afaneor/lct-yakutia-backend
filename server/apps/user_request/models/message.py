@@ -4,7 +4,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from server.apps.services.base_model import AbstractBaseModel
-from server.apps.services.enums import ClientType, MessageType, RequestStatus
+from server.apps.services.enums import ClientType, MessageType, RequestStatus, \
+    MessageStatus
 
 
 class Message(AbstractBaseModel):
@@ -20,16 +21,16 @@ class Message(AbstractBaseModel):
         verbose_name=_('Сообщение'),
     )
     message_type = models.CharField(
-        verbose_name=_('Сообщение'),
+        verbose_name=_('Тип сообщения'),
         max_length=settings.MAX_STRING_LENGTH,
         choices=MessageType.choices,
     )
     status = models.CharField(
-        verbose_name=_('Статус запроса'),
+        verbose_name=_('Статус сообщения'),
         max_length=settings.MAX_STRING_LENGTH,
-        choices=RequestStatus.choices,
+        choices=MessageStatus.choices,
+        default=MessageStatus.UNDEFINED,
     )
-
 
     class Meta(AbstractBaseModel.Meta):
         verbose_name = _('Сообщение')

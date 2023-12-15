@@ -1,11 +1,21 @@
 from server.apps.g_mtg.api.serializers.product import ProductSerializer
-from server.apps.g_mtg.api.serializers.project import ProjectSerializer
-from server.apps.g_mtg.api.serializers.client import (
+from server.apps.g_mtg.api.serializers.project import (
+    CreateProjectSerializer,
+    ProjectSerializer,
+    UpdateProjectSerializer,
     UploadDataSerializer,
+)
+from server.apps.g_mtg.api.serializers.sale_channel import (
+    BaseSaleChannelSerializer,
+    SaleChannel,
 )
 
 __all__ = [
-    'UploadDataSerializer',
+    'CreateProjectSerializer',
     'ProjectSerializer',
+    'UpdateProjectSerializer',
+    'UploadDataSerializer',
     'ProductSerializer',
+    'BaseSaleChannelSerializer',
+    'SaleChannel',
 ]

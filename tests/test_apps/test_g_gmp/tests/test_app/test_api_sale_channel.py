@@ -7,26 +7,26 @@ fake = Faker()
 
 
 @pytest.mark.django_db()
-def test_project_format(
+def test_sale_channel_format(
     api_client,
-    project,
-    project_format,
+    sale_channel,
+    sale_channel_format,
 ):
-    """Формат Project."""
-    url = reverse('g-mtg:project-detail', [project.pk])
+    """Формат SaleChannel."""
+    url = reverse('g-mtg:sale-channel-detail', [sale_channel.pk])
 
     response = api_client.get(url)
 
     assert response.status_code == status.HTTP_200_OK
-    assert response == project_format(project)
+    assert response == sale_channel_format(sale_channel)
 
 
 @pytest.mark.django_db()
-def test_project_post(
+def test_sale_channel_post(
     api_client,
 ):
-    """Создание Project."""
-    url = reverse('g-mtg:project-list')
+    """Создание SaleChannel."""
+    url = reverse('g-mtg:sale-channel-list')
     response = api_client.post(
         url,
         data={},
@@ -37,9 +37,9 @@ def test_project_post(
 
 
 @pytest.mark.django_db()
-def test_project_delete(api_client, project):
-    """Удаление Project."""
-    url = reverse('g-mtg:project-detail', [project.pk])
+def test_sale_channel_delete(api_client, sale_channel):
+    """Удаление SaleChannel."""
+    url = reverse('g-mtg:sale-channel-detail', [sale_channel.pk])
 
     response = api_client.delete(url)
 
@@ -47,12 +47,12 @@ def test_project_delete(api_client, project):
 
 
 @pytest.mark.django_db()
-def test_project_change(
+def test_sale_channel_change(
     api_client,
-    project,
+    sale_channel,
 ):
-    """Изменение Project."""
-    url = reverse('api:g-mtg:project-detail', [project.pk])
+    """Изменение SaleChannel."""
+    url = reverse('api:g-mtg:sale-channel-detail', [sale_channel.pk])
 
     response = api_client.put(
         url,

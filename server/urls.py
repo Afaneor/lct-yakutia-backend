@@ -15,9 +15,9 @@ from django.urls import include, path
 from health_check import urls as health_urls
 
 from server.apps.g_mtg.api.routers import router as g_mtg_router
-from server.apps.user.api.routers import router as user_router
 # from server.apps.user_request.api.routers import router as user_request_router
 from server.apps.services.custom_router.api_router import router
+from server.apps.user.api.routers import router as user_router
 from server.url_components import (
     admin_urlpatterns,
     docs_urlpatterns,

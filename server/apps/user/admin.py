@@ -22,7 +22,10 @@ class UserAdmin(auth_admin.UserAdmin):
         'username',
         'email',
     )
-    list_filter = ('is_superuser', 'is_active')
+    list_filter = (
+        'is_superuser',
+        'is_active',
+    )
     ordering = (
         'id',
         'email',

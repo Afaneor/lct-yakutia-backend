@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from server.apps.services.base_model import AbstractBaseModel
 
 
-class SalesChannel(AbstractBaseModel):
+class SaleChannel(AbstractBaseModel):
     """Канал продаж."""
 
     name = models.CharField(

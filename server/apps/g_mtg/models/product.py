@@ -12,6 +12,11 @@ class Product(AbstractBaseModel):
         verbose_name=_('Название'),
         max_length=settings.MAX_STRING_LENGTH,
     )
+    key_name = models.CharField(
+        verbose_name=_('Ключ продукта'),
+        max_length=settings.MAX_STRING_LENGTH,
+        unique=True,
+    )
     description = models.TextField(
         verbose_name=_('Описание'),
     )

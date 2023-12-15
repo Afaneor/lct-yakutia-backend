@@ -13,7 +13,7 @@ def test_product_format(
     product_format,
 ):
     """Формат Product."""
-    url = reverse('g-gmp:product-detail', [product.pk])
+    url = reverse('g-mtg:product-detail', [product.pk])
 
     response = api_client.get(url)
 
@@ -26,7 +26,7 @@ def test_product_post(
     api_client,
 ):
     """Создание Product."""
-    url = reverse('g-gmp:product-list')
+    url = reverse('g-mtg:product-list')
     response = api_client.post(
         url,
         data={},
@@ -39,7 +39,7 @@ def test_product_post(
 @pytest.mark.django_db()
 def test_product_delete(api_client, product):
     """Удаление Product."""
-    url = reverse('g-gmp:product-detail', [product.pk])
+    url = reverse('g-mtg:product-detail', [product.pk])
 
     response = api_client.delete(url)
 
@@ -52,7 +52,7 @@ def test_product_change(
     product,
 ):
     """Изменение Product."""
-    url = reverse('api:g-gmp:product-detail', [product.pk])
+    url = reverse('api:g-mtg:product-detail', [product.pk])
 
     response = api_client.put(
         url,

@@ -11,12 +11,6 @@ class Project(AbstractBaseModel):
     Сущность для аккумуляции продукта, канала продажи и пользователей.
     """
 
-    user = models.ForeignKey(
-        to='user.User',
-        on_delete=models.CASCADE,
-        verbose_name=_('Пользователь'),
-        related_name='projects',
-    )
     product = models.ForeignKey(
         to='g_mtg.Product',
         on_delete=models.CASCADE,
@@ -29,10 +23,26 @@ class Project(AbstractBaseModel):
     )
     description = models.TextField(
         verbose_name=_('Описание'),
+        blank=True,
     )
     prompt = models.CharField(
         verbose_name=_('Подсказка для генерации продукта в рамках проекта'),
         max_length=settings.MAX_STRING_LENGTH,
+        blank=True,
+    )
+    users = models.ManyToManyField(
+        to='user.User',
+        through='g_mtg.ProjectUser',
+        through_fields=('project', 'user'),
+        related_name='projects',
+        blank=True,
+    )
+    sales_channels = models.ManyToManyField(
+        to='g_mtg.SaleChannel',
+        through='g_mtg.ProjectSaleChannel',
+        through_fields=('project', 'sale_channel'),
+        related_name='projects',
+        blank=True,
     )
 
     class Meta(AbstractBaseModel.Meta):
