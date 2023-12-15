@@ -35,6 +35,16 @@ class Message(AbstractBaseModel):
     class Meta(AbstractBaseModel.Meta):
         verbose_name = _('Сообщение')
         verbose_name_plural = _('Сообщения')
+        constraints = [
+            models.CheckConstraint(
+                name='message_message_type_valid',
+                check=models.Q(message_type__in=MessageType.values),
+            ),
+            models.CheckConstraint(
+                name='message_message_status_valid',
+                check=models.Q(status__in=MessageStatus.values),
+            ),
+        ]
 
     def __str__(self):
         return f'{self.user_request}'

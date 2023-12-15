@@ -55,6 +55,20 @@ class UserRequest(AbstractBaseModel):
     class Meta(AbstractBaseModel.Meta):
         verbose_name = _('Запрос пользователя')
         verbose_name_plural = _('Запросы пользователей')
+        constraints = [
+            models.UniqueConstraint(
+                fields=('project_sale_channel', 'client_data'),
+                name='unique_client_data_for_project_sale_channel',
+            ),
+            models.CheckConstraint(
+                name='user_request_success_type_valid',
+                check=models.Q(success_type__in=SuccessType.values),
+            ),
+            models.CheckConstraint(
+                name='user_request_status_valid',
+                check=models.Q(status__in=RequestStatus.values),
+            ),
+        ]
 
     def __str__(self):
         return f'{self.project_sale_channel} - {self.user}'

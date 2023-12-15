@@ -78,12 +78,9 @@ class ProjectSaleChannelViewSet(BaseReadOnlyViewSet):
             all_client_data=file_data,
             client_data_decoding=client_data_decoding,
         )
-        detail_text = _('Загружено {client_count} клиентов').format(
-            client_count=len(file_data),
-        )
 
         return Response(
-            data={'detail': detail_text},
+            data={'detail': _('Данные загружены')},
             status=status.HTTP_201_CREATED
         )
 

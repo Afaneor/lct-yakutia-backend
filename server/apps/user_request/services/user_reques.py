@@ -8,7 +8,6 @@ from server.apps.user.models import User
 from server.apps.user_request.models.user_request import UserRequest
 
 
-
 def validate_client_data_decoding(
     client_data_decoding: Dict[str, Any],
     file_header: List[Any],
@@ -40,4 +39,5 @@ def create_user_request(
             )
             for client_data in all_client_data
         ],
+        ignore_conflicts=True,
     )
