@@ -24,8 +24,8 @@ class ProjectSaleChannel(AbstractBaseModel):
     )
 
     class Meta(AbstractBaseModel.Meta):
-        verbose_name = _('Канал продажи')
-        verbose_name_plural = _('Каналы продаж')
+        verbose_name = _('Канал продажи в проекте')
+        verbose_name_plural = _('Каналы продаж в проектах')
         constraints = [
             models.UniqueConstraint(
                 fields=('project', 'sale_channel'),

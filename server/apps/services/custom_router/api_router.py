@@ -10,9 +10,9 @@ from rest_framework.views import APIView
 
 class ApiRouter(DefaultRouter):
     """
-    Расширение для drf.DefaultRouter.
+    Расширение для DefaultRouter.
 
-    Теперь можно регистрировать как DRF ViewSets, так и другие роутеры
+    Теперь можно регистрировать как DRF ViewSets, так и другие роутеры.
     Примеры использования:
     1. Тут регистрируется другой роутер
     2. Тут регистрируется ViewSet
@@ -127,7 +127,7 @@ def _reverse(  # noqa: WPS211
         kwargs = kwargs or {}
         kwargs['format'] = format
     try:
-        # преднамерено заменяется django.conf.urls.url (WPS442)
+        # Специально заменяется django.conf.urls.url (WPS442)
         url = django_reverse(  # noqa: WPS442
             viewname, args=args, kwargs=kwargs, **extra,
         )

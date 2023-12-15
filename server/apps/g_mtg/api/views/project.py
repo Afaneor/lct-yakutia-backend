@@ -11,20 +11,17 @@ from server.apps.g_mtg.api.serializers import (
     UpdateProjectSerializer,
 )
 from server.apps.g_mtg.api.serializers.project import \
-    CreateProjectSaleChannelSerializer, UploadDataSerializer
+    CreateProjectSaleChannelSerializer
 from server.apps.g_mtg.models import Project
-from server.apps.services.crud.project import create_project, \
+from server.apps.g_mtg.services.project import create_project, \
     create_project_sale_channel, get_statistics
 from server.apps.services.filters_mixins import (
     CreatedUpdatedDateFilterMixin,
-    UserFilterMixin,
 )
 from server.apps.services.views import RetrieveListCreateUpdateViewSet
-import pylightxl as xl
 
 
 class ProjectFilter(
-    UserFilterMixin,
     CreatedUpdatedDateFilterMixin,
     django_filters.FilterSet,
 ):
@@ -82,7 +79,6 @@ class ProjectViewSet(RetrieveListCreateUpdateViewSet):
         'upload_data': None,
     }
 
-
     def get_queryset(self):  # noqa: WPS615
         """Фильтруем выдачу проектов."""
         queryset = super().get_queryset()
@@ -137,40 +133,4 @@ class ProjectViewSet(RetrieveListCreateUpdateViewSet):
         return Response(
             data=statistics_data,
             status=status.HTTP_201_CREATED,
-        )
-
-    @action(
-        methods=['POST'],
-        url_path='add-clients',
-        detail=True,
-        serializer_class=UploadDataSerializer,
-    )
-    def create_client(self, request):
-        """Добавление в проект клиентов."""
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        statistics_data = get_statistics(
-            project=self.get_object(),
-        )
-
-        return Response(
-            data=statistics_data,
-            status=status.HTTP_201_CREATED,
-        )
-
-    @action(  # type: ignore
-        methods=['POST'],
-        url_path='upload-data',
-        detail=False,
-        serializer_class=UploadDataSerializer,
-    )
-    def upload_data(self, request: Request):
-        """Загрузка данных по клиенты."""
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        a = request.FILES['file'].read()
-        with request.FILES['file'].open() as file:
-            db = xl.readxl(file)
-        return Response(
-            status=status.HTTP_200_OK
         )

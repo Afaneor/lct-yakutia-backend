@@ -38,6 +38,10 @@ class ProjectUser(AbstractBaseModel):
                 fields=('project', 'user'),
                 name='unique_user_for_project',
             ),
+            models.CheckConstraint(
+                name='project_user_role_valid',
+                check=models.Q(role__in=UserRoleInProject.values),
+            ),
         ]
 
     def __str__(self):

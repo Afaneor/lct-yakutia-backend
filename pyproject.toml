@@ -57,14 +57,13 @@ django-anymail = { extras = ["sendgrid"], version = "^9.0" }
 djangorestframework = "^3.14"  # https://github.com/encode/django-rest-framework
 drf-extensions = "^0.7.1"  # https://github.com/chibisov/drf-extensions
 
-# Nova requirements
+# Requirements
 gunicorn = "^20.1"  # https://pypi.org/project/gunicorn/
 phonenumbers = "^8.13.3"  # https://github.com/daviddrysdale/python-phonenumbers
 psycopg2-binary = "*" # https://github.com/psycopg/psycopg2
 sentry-sdk = "^1.12.1"  # https://github.com/getsentry/sentry-python
 flake8-nova-formatter = "*"  # https://gitlab.letsnova.com/Nova/styleguide/flake8-nova-formatter
 pytest-factoryboy = "^2.5.1"  # https://pypi.org/project/pytest-factoryboy/
-drf-nova-router = "*"  # https://gitlab.letsnova.com/Nova/django/drf-nova-router
 djangorestframework-simplejwt = "^5.2.2"  # https://github.com/jazzband/djangorestframework-simplejwt
 reportlab = "3.6.12"  # https://pypi.org/project/reportlab/
 requests-cache = "0.9.8"  # https://pypi.org/project/requests-cache/

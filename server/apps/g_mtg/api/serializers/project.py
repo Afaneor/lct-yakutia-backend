@@ -90,6 +90,7 @@ class UploadDataSerializer(serializers.Serializer):
     """Загрузка файла в систему."""
 
     file = serializers.FileField(required=True)
+    client_data_decoding = serializers.JSONField(required=True)
 
     def validate_file(self, file: InMemoryUploadedFile) -> InMemoryUploadedFile:
         """Проверка файла."""

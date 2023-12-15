@@ -1,5 +1,4 @@
 from django.utils.translation import gettext_lazy as _
-from drf_nova_router.api_router import ApiRouter
 from rest_framework.routers import APIRootView
 
 from server.apps.g_mtg.api.views import (
@@ -7,8 +6,10 @@ from server.apps.g_mtg.api.views import (
     # ProjectSaleChannelViewSet,
     # ProjectUserViewSet,
     ProjectViewSet,
-    SaleChannelViewSet,
+    SaleChannelViewSet, ProjectSaleChannelViewSet,
 )
+from server.apps.services.custom_router.api_router import ApiRouter
+from server.apps.services.custom_router.nested_router import NestedDefaultRouter
 
 
 class GMtgAPIRootView(APIRootView):
@@ -19,14 +20,13 @@ class GMtgAPIRootView(APIRootView):
 
 
 router = ApiRouter()
-
 router.APIRootView = GMtgAPIRootView
-router.register('sales-channels', SaleChannelViewSet, 'sales-channels')
-# router.register('projects-users', ProjectUserViewSet, 'projects-users')
-# router.register(
-#     'projects-sales-channels',
-#     ProjectSaleChannelViewSet,
-#     'projects-sales-channels',
-# )
+
 router.register('projects', ProjectViewSet, 'projects')
 router.register('products', ProductViewSet, 'products')
+router.register('sales-channels', SaleChannelViewSet, 'sales-channels')
+router.register(
+    'projects-sales-channels',
+    ProjectSaleChannelViewSet,
+    'projects-sales-channels',
+)

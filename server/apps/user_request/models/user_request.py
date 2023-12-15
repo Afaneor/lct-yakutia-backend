@@ -27,6 +27,7 @@ class UserRequest(AbstractBaseModel):
     client_id = models.CharField(
         verbose_name=_('ID клиента из сторонних ресурсов'),
         max_length=settings.MAX_STRING_LENGTH,
+        blank=True,
     )
     source_client_info = models.CharField(
         verbose_name=_('Источник информации о клиенте'),
@@ -42,6 +43,7 @@ class UserRequest(AbstractBaseModel):
         verbose_name=_('Статус запроса'),
         max_length=settings.MAX_STRING_LENGTH,
         choices=RequestStatus.choices,
+        default=RequestStatus.IN_PROGRESS,
     )
     success_type = models.CharField(
         verbose_name=_('Тип успеха'),

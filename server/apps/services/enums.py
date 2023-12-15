@@ -22,6 +22,7 @@ class RequestStatus(models.TextChoices):
 
     OK = 'ok', _('Ок')
     ERROR = 'error', _('Ошибка')
+    IN_PROGRESS = 'in_progress', _('В процессе')
 
 
 class MessageStatus(models.TextChoices):

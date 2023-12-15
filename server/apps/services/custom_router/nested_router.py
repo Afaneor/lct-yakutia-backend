@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections import defaultdict
 from typing import Iterable, Optional, Union
 
-from rest_framework.routers import BaseRouter, SimpleRouter
+from rest_framework.routers import BaseRouter, SimpleRouter, DefaultRouter
 from rest_framework.viewsets import ViewSet
 from rest_framework_extensions.utils import compose_parent_pk_kwarg_name
 
@@ -38,7 +38,7 @@ class NestedRegistryItem(object):
         Регистрация нового вложенного маршрута.
 
         :param prefix:
-        :type prefix: str
+        :type prefix: Str
         :param viewset_or_router: ViewSet или другой роутер
         :type viewset_or_router: ViewSet, BaseRouter, NestedRegistryItem
         :param basename: Название namespace, с которым будет
@@ -61,7 +61,7 @@ class NestedRegistryItem(object):
 
         """
         self.router._register(
-            prefix=self.prefix(
+            prefix=self.get_prefix(
                 current_prefix=prefix,
                 parents_query_lookups=tuple(parents_query_lookups),
             ),
@@ -84,14 +84,14 @@ class NestedRegistryItem(object):
             parent_basename=basename,
         )
 
-    def prefix(self, current_prefix, parents_query_lookups) -> str:
+    def get_prefix(self, current_prefix, parents_query_lookups) -> str:
         """Url текущего уровня."""
         return '{0}/{1}'.format(
-            self.parent_prefix(parents_query_lookups),
+            self.get_parent_prefix(parents_query_lookups),
             current_prefix,
         )
 
-    def parent_prefix(self, parents_query_lookups):
+    def get_parent_prefix(self, parents_query_lookups):
         """Вычисление Url родительского элемента."""
         prefix = '/'
         current_item = self
@@ -121,9 +121,11 @@ class NestedRegistryItem(object):
 class NestedRouterMixin(object):
     """Миксин, добавляющий регистрацию в роутере с генерацией item."""
 
+    def _register(self, *args, **kwargs):
+        return super().register(*args, **kwargs)
+
     def register(self, *args, **kwargs):
-        """Регистрация router-a или viewset-a."""
-        super().register(*args, **kwargs)
+        self._register(*args, **kwargs)
         return NestedRegistryItem(
             router=self,
             parent_prefix=self.registry[-1][0],
@@ -132,5 +134,23 @@ class NestedRouterMixin(object):
         )
 
 
-class NestedSimpleRouter(NestedRouterMixin, SimpleRouter):
-    """Роутер на экспорт."""
+class NestedDefaultRouter(NestedRouterMixin, DefaultRouter):
+    """Роутер на экспорт.
+
+
+    class TemplateAPIRootView(APIRootView):
+
+    __doc__ = _('Шаблон')
+    name = _('template')
+
+
+    router = NestedSimpleRouter()
+    router.APIRootView = GMtgAPIRootView
+    project_router = router.register('projects', ProjectViewSet, 'projects')
+    project_router.register(
+        'sales-channels',
+        SaleChannelViewSet,
+        'projects-sales-channels',
+        parents_query_lookups=["projects"],
+    )
+    """
