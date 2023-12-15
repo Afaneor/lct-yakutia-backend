@@ -64,14 +64,6 @@ class ProjectViewSet(RetrieveListCreateUpdateViewSet):
     ordering_fields = '__all__'
     search_fields = (
         'name',
-        'description',
-        'prompt',
-        'user__email',
-        'user__username',
-        'user__first_name',
-        'user__last_name',
-        'product__name',
-        'product__key_name',
     )
     filterset_class = ProjectFilter
     permission_type_map = {

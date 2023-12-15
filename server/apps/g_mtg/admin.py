@@ -67,6 +67,10 @@ class ProjectUserAdmin(admin.ModelAdmin[ProjectUser]):
         'user',
         'role',
     )
+    raw_id_fields = (
+        "project",
+        "user",
+    )
 
 
 @admin.register(ProjectSaleChannel)
@@ -92,6 +96,10 @@ class ProjectSaleChannelAdmin(admin.ModelAdmin[ProjectSaleChannel]):
         'id',
         'project',
         'sale_channel',
+    )
+    raw_id_fields = (
+        "project",
+        "sale_channel",
     )
 
 
@@ -121,6 +129,9 @@ class ProjectAdmin(admin.ModelAdmin[Project]):
         'id',
         'product',
         'name',
+    )
+    raw_id_fields = (
+        "product",
     )
 
 

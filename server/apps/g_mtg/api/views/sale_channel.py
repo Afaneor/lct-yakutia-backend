@@ -26,7 +26,5 @@ class SaleChannelViewSet(BaseReadOnlyViewSet):
     ordering_fields = '__all__'
     search_fields = (
         'name',
-        'key_name',
-        'description',
     )
     filterset_class = SaleChannelFilter

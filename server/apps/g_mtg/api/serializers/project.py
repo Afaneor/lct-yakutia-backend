@@ -2,6 +2,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
+from server.apps.g_mtg.api.serializers import BaseProductSerializer
 from server.apps.g_mtg.api.serializers.sale_channel import BaseSaleChannelSerializer
 from server.apps.g_mtg.models import Project
 from server.apps.services.serializers import ModelSerializerWithPermission
@@ -11,6 +12,8 @@ from django.utils.translation import gettext_lazy as _
 
 class ListProjectSerializer(ModelSerializerWithPermission):
     """Список Проект."""
+
+    product = BaseProductSerializer()
 
     class Meta(object):
         model = Project
@@ -29,6 +32,7 @@ class ListProjectSerializer(ModelSerializerWithPermission):
 class ProjectSerializer(ModelSerializerWithPermission):
     """Проект."""
 
+    product = BaseProductSerializer()
     users = BaseUserSerializer(many=True)
     sales_channels = BaseSaleChannelSerializer(many=True)
 

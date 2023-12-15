@@ -14,6 +14,7 @@ import pylightxl as xl
 
 from server.apps.user_request.services.user_reques import \
     validate_client_data_decoding, create_user_request
+from django.utils.translation import gettext_lazy as _
 
 
 class ProjectSaleChannelFilter(django_filters.FilterSet):
@@ -36,8 +37,6 @@ class ProjectSaleChannelViewSet(BaseReadOnlyViewSet):
     ordering_fields = '__all__'
     search_fields = (
         'name',
-        'key_name',
-        'description',
     )
     filterset_class = ProjectSaleChannelFilter
     permission_type_map = {
@@ -70,7 +69,6 @@ class ProjectSaleChannelViewSet(BaseReadOnlyViewSet):
         validate_client_data_decoding(
             client_data_decoding=client_data_decoding,
             file_header=file_header,
-
         )
 
         create_user_request(
@@ -80,8 +78,12 @@ class ProjectSaleChannelViewSet(BaseReadOnlyViewSet):
             all_client_data=file_data,
             client_data_decoding=client_data_decoding,
         )
+        detail_text = _('Загружено {client_count} клиентов').format(
+            client_count=len(file_data),
+        )
 
         return Response(
-            status=status.HTTP_200_OK
+            data={'detail': detail_text},
+            status=status.HTTP_201_CREATED
         )
 
