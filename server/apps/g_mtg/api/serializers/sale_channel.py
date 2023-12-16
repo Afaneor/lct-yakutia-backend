@@ -5,9 +5,6 @@ from server.apps.services.serializers import ModelSerializerWithPermission
 from server.apps.user.api.serializers import BaseUserSerializer
 
 
-
-
-
 class SaleChannelSerializer(ModelSerializerWithPermission):
     """Канал продаж."""
 

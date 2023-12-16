@@ -1,9 +1,10 @@
 from rest_framework import serializers
 
 from server.apps.g_mtg.api.serializers import BaseProductSerializer
-from server.apps.g_mtg.api.serializers.nested import \
-    BaseProjectSaleChannelSerializer, BaseSaleChannelSerializer
-
+from server.apps.g_mtg.api.serializers.nested import (
+    BaseProjectSaleChannelSerializer,
+    BaseSaleChannelSerializer,
+)
 from server.apps.g_mtg.models import Project
 from server.apps.services.serializers import ModelSerializerWithPermission
 from server.apps.user.api.serializers import BaseUserSerializer

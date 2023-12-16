@@ -8,9 +8,7 @@ from server.apps.g_mtg.api.serializers import (
     UpdateProjectSerializer,
 )
 from server.apps.g_mtg.models import Project
-from server.apps.g_mtg.services.project import (
-    create_project,
-)
+from server.apps.g_mtg.services.project import create_project
 from server.apps.services.filters_mixins import CreatedUpdatedDateFilterMixin
 from server.apps.services.views import RetrieveListCreateUpdateViewSet
 

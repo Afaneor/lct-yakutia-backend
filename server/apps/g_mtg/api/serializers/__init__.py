@@ -18,17 +18,14 @@ from server.apps.g_mtg.api.serializers.project_sale_channel import (
     ProjectSaleChannelSerializer,
     UpdateProjectSaleChannelSerializer,
     UploadDataFromFileSerializer,
-    UploadDataFromPostgresSerializer,
     UploadDataFromMongoSerializer,
+    UploadDataFromPostgresSerializer,
 )
 from server.apps.g_mtg.api.serializers.project_user import (
     CreateProjectUserSerializer,
     ProjectUserSerializer,
 )
-from server.apps.g_mtg.api.serializers.sale_channel import (
-
-    SaleChannel,
-)
+from server.apps.g_mtg.api.serializers.sale_channel import SaleChannel
 
 __all__ = [
     'BaseProductSerializer',

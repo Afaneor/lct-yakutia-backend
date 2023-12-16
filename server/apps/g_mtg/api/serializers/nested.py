@@ -1,7 +1,11 @@
 from rest_framework import serializers
 
-from server.apps.g_mtg.models import Project, Product, ProjectSaleChannel, \
-    SaleChannel
+from server.apps.g_mtg.models import (
+    Product,
+    Project,
+    ProjectSaleChannel,
+    SaleChannel,
+)
 
 
 class BaseProductSerializer(serializers.ModelSerializer):

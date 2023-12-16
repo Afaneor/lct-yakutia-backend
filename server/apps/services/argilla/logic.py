@@ -1,6 +1,5 @@
 import argilla as rg
 
-
 rg.init(api_url='http://0.0.0.0:6900/', api_key='admin.apikey', workspace='admin')
 
 
