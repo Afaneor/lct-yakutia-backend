@@ -1,9 +1,9 @@
 from rest_framework import serializers
 
 from server.apps.g_mtg.api.serializers import BaseProductSerializer
-from server.apps.g_mtg.api.serializers.sale_channel import (
-    BaseSaleChannelSerializer,
-)
+from server.apps.g_mtg.api.serializers.nested import \
+    BaseProjectSaleChannelSerializer, BaseSaleChannelSerializer
+
 from server.apps.g_mtg.models import Project
 from server.apps.services.serializers import ModelSerializerWithPermission
 from server.apps.user.api.serializers import BaseUserSerializer
@@ -32,7 +32,7 @@ class ProjectSerializer(ModelSerializerWithPermission):
 
     product = BaseProductSerializer()
     users = BaseUserSerializer(many=True)
-    sales_channels = BaseSaleChannelSerializer(many=True)
+    projects_sales_channels = BaseProjectSaleChannelSerializer(many=True)
 
     class Meta(object):
         model = Project
@@ -42,7 +42,7 @@ class ProjectSerializer(ModelSerializerWithPermission):
             'name',
             'description',
             'users',
-            'sales_channels',
+            'projects_sales_channels',
             'created_at',
             'updated_at',
             'permission_rules',

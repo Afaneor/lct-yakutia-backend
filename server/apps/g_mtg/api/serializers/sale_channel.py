@@ -5,18 +5,7 @@ from server.apps.services.serializers import ModelSerializerWithPermission
 from server.apps.user.api.serializers import BaseUserSerializer
 
 
-class BaseSaleChannelSerializer(serializers.ModelSerializer):
-    """Базовая информация о канале продаж."""
 
-    class Meta(object):
-        model = SaleChannel
-        fields = (
-            'id',
-            'image',
-            'name',
-            'key_name',
-            'description',
-        )
 
 
 class SaleChannelSerializer(ModelSerializerWithPermission):

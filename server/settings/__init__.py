@@ -32,6 +32,7 @@ _base_settings = (
     'components/email.py',
     'components/celery.py',
     'components/g_mtg.py',
+    'components/argilla.py',
     # Select the right env:
     'environments/{0}.py'.format(_ENV),
     # Optionally override some settings:

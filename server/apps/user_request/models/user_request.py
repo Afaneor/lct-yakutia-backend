@@ -43,7 +43,7 @@ class UserRequest(AbstractBaseModel):
         verbose_name=_('Статус запроса'),
         max_length=settings.MAX_STRING_LENGTH,
         choices=RequestStatus.choices,
-        default=RequestStatus.IN_PROGRESS,
+        default=RequestStatus.INITIAL,
     )
     success_type = models.CharField(
         verbose_name=_('Тип успеха'),

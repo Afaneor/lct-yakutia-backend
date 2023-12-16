@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from server.apps.g_mtg.models import Project, Product
+from server.apps.g_mtg.models import Project, Product, ProjectSaleChannel, \
+    SaleChannel
 
 
 class BaseProductSerializer(serializers.ModelSerializer):
@@ -27,4 +28,31 @@ class BaseProjectSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'created_at',
+        )
+
+class BaseSaleChannelSerializer(serializers.ModelSerializer):
+    """Базовая информация о канале продаж."""
+
+    class Meta(object):
+        model = SaleChannel
+        fields = (
+            'id',
+            'image',
+            'name',
+            'key_name',
+            'description',
+        )
+
+
+class BaseProjectSaleChannelSerializer(serializers.ModelSerializer):
+    """Канал продаж."""
+
+    sale_channel = BaseSaleChannelSerializer()
+
+    class Meta(object):
+        model = ProjectSaleChannel
+        fields = (
+            'id',
+            'sale_channel',
+            'prompt',
         )

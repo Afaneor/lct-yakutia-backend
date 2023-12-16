@@ -66,6 +66,7 @@ class CreateUserRequestSerializer(serializers.Serializer):
             'sale_channel',
             'user',
             'client_id',
+            'prompt',
             'source_client_info',
             'client_data',
             'client_data_decoding',

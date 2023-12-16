@@ -48,18 +48,21 @@ def create_user_request(
     validated_data: Dict[str, Any],
 ):
     """Создание запроса пользователя."""
+    project = validated_data.pop('project')
+    sale_channel = validated_data.pop('sale_channel')
 
-    pass
-    # UserRequest.objects.bulk_create(
-    #     [
-    #         UserRequest(
-    #             project_sale_channel=project_sale_channel,
-    #             user=user,
-    #             source_client_info=file_name,
-    #             client_data=client_data,
-    #             client_data_decoding=client_data_decoding,
-    #         )
-    #         for client_data in all_client_data
-    #     ],
-    #     ignore_conflicts=True,
-    # )
+    project_sale_channel = ProjectSaleChannel(
+        project=validated_data.pop('project'),
+        sale_channel=validated_data.pop('sale_channel'),
+        prompt=project.description + project.product.description + sale_channel.description
+    )
+
+
+
+    UserRequest.objects.create(
+        project_sale_channel=project_sale_channel,
+        user=user,
+        source_client_info=file_name,
+        client_data=client_data,
+        client_data_decoding=client_data_decoding,
+    )

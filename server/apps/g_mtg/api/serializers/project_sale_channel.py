@@ -68,8 +68,8 @@ class UploadDataFromPostgresSerializer(serializers.Serializer):
     user = serializers.CharField()
     password = serializers.CharField()
     host = serializers.CharField()
-    port = serializers.CharField()
-    sql = serializers.CharField()
+    port = serializers.IntegerField()
+    db_request = serializers.CharField()
 
 
 
@@ -79,4 +79,5 @@ class UploadDataFromMongoSerializer(serializers.Serializer):
     dbname = serializers.CharField()
     collection_name = serializers.CharField()
     host = serializers.CharField()
-    port = serializers.CharField()
+    port = serializers.IntegerField()
+    db_request = serializers.JSONField()

@@ -13,10 +13,9 @@ from rest_framework.response import Response
 from server.apps.g_mtg.api.serializers import (
     MultipleCreateProjectSaleChannelSerializer,
     ProjectSaleChannelSerializer,
-    UploadDataFromFileSerializer,
+    UploadDataFromFileSerializer, UploadDataFromPostgresSerializer,
+    UploadDataFromMongoSerializer,
 )
-from server.apps.g_mtg.api.serializers.project_sale_channel import \
-    UploadDataFromPostgresSerializer
 from server.apps.g_mtg.models import ProjectSaleChannel
 from server.apps.g_mtg.services.project import (
     create_project,
@@ -59,6 +58,7 @@ class ProjectSaleChannelViewSet(BaseReadOnlyViewSet):
         **BaseReadOnlyViewSet.permission_type_map,
         'add_client_from_file': 'add_client',
         'add_client_from_postgres': 'add_client',
+        'add_client_from_mongo': 'add_client',
         'multiple_create': 'add_channel',
         'statistics': 'statistics',
     }
@@ -121,27 +121,26 @@ class ProjectSaleChannelViewSet(BaseReadOnlyViewSet):
             port=vd['port'],
         )
         cur = conn.cursor()
-        cur.execute(vd['sql'])
+        cur.execute(vd['db_request'])
         cur.fetchall()
 
-    # @action(  # type: ignore
-    #     methods=['POST'],
-    #     url_path='add-client-from-mongo',
-    #     detail=True,
-    #     serializer_class=UploadDataFromMongoSerializer,
-    # )
-    # def add_client_from_mongo(self, request: Request, pk: int):
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     vd = serializer.validated_data
-    #     client = MongoClient(
-    #         host=vd['host'],
-    #         port=vd['port'],
-    #     )
-    #     db = client[vd['dbname']]
-    #     collection = db[vd['dbname']]
-    #     cur.execute(vd['sql'])
-    #     cur.fetchall()
+    @action(  # type: ignore
+        methods=['POST'],
+        url_path='add-client-from-mongo',
+        detail=True,
+        serializer_class=UploadDataFromMongoSerializer,
+    )
+    def add_client_from_mongo(self, request: Request, pk: int):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        vd = serializer.validated_data
+        client = MongoClient(
+            host=vd['host'],
+            port=vd['port'],
+        )
+        db = client[vd['dbname']]
+        collection = db[vd['collection_name']]
+        result = [data for data in collection.find(vd['db_request'])]
 
 
     @action(
