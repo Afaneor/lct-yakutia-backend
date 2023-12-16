@@ -40,6 +40,7 @@ class UserSerializer(ModelSerializerWithPermission):
             'middle_name',
             'is_active',
             'role',
+            'availability_statistics',
             'permission_rules',
         )
 
