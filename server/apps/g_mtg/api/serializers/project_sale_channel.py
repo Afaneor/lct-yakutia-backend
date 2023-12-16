@@ -62,11 +62,21 @@ class UploadDataFromFileSerializer(serializers.Serializer):
 
 
 class UploadDataFromPostgresSerializer(serializers.Serializer):
-    """Подключение к БД."""
+    """Подключение к Postgres."""
 
-    dbname = serializers.CharField()
+    db_name = serializers.CharField()
     user = serializers.CharField()
     password = serializers.CharField()
     host = serializers.CharField()
     port = serializers.CharField()
     sql = serializers.CharField()
+
+
+
+class UploadDataFromMongoSerializer(serializers.Serializer):
+    """Подключение к Mongo."""
+
+    dbname = serializers.CharField()
+    collection_name = serializers.CharField()
+    host = serializers.CharField()
+    port = serializers.CharField()

@@ -4,6 +4,7 @@ import django_filters
 import psycopg2
 import pylightxl as xl
 from django.utils.translation import gettext_lazy as _
+from pymongo import MongoClient
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.request import Request
@@ -113,7 +114,7 @@ class ProjectSaleChannelViewSet(BaseReadOnlyViewSet):
         serializer.is_valid(raise_exception=True)
         vd = serializer.validated_data
         conn = psycopg2.connect(
-            dbname=vd['dbname'],
+            dbname=vd['db_name'],
             user=vd['user'],
             password=vd['password'],
             host=vd['host'],
@@ -122,6 +123,26 @@ class ProjectSaleChannelViewSet(BaseReadOnlyViewSet):
         cur = conn.cursor()
         cur.execute(vd['sql'])
         cur.fetchall()
+
+    # @action(  # type: ignore
+    #     methods=['POST'],
+    #     url_path='add-client-from-mongo',
+    #     detail=True,
+    #     serializer_class=UploadDataFromMongoSerializer,
+    # )
+    # def add_client_from_mongo(self, request: Request, pk: int):
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     vd = serializer.validated_data
+    #     client = MongoClient(
+    #         host=vd['host'],
+    #         port=vd['port'],
+    #     )
+    #     db = client[vd['dbname']]
+    #     collection = db[vd['dbname']]
+    #     cur.execute(vd['sql'])
+    #     cur.fetchall()
+
 
     @action(
         methods=['POST'],

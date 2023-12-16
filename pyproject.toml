@@ -72,6 +72,7 @@ django-stubs = "^1.13"  # https://github.com/typeddjango/django-stubs
 rules = "^3.3"
 gdrfile = "^0.0.1"
 pylightxl = "^1.61"
+pymongo = "^4.6.1"
 
 [tool.poetry.dev-dependencies]
 django-coverage-plugin = "^3.0"  # https://github.com/nedbat/django_coverage_plugin
