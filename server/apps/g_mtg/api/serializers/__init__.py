@@ -23,13 +23,15 @@ from server.apps.g_mtg.api.serializers.sale_channel import (
 )
 
 __all__ = [
+    'BaseProductSerializer',
+    'ProductSerializer',
+
     'ListProjectSerializer',
     'CreateProjectSerializer',
     'ProjectSerializer',
     'UpdateProjectSerializer',
     'UploadDataSerializer',
-    'BaseProductSerializer',
-    'ProductSerializer',
+
     'BaseSaleChannelSerializer',
     'SaleChannel',
     'MultipleCreateProjectSaleChannelSerializer',

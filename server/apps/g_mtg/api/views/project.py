@@ -1,3 +1,5 @@
+from typing import List
+
 import django_filters
 from django.utils.translation import gettext_lazy as _
 from rest_framework import status
@@ -92,12 +94,14 @@ class ProjectViewSet(RetrieveListCreateUpdateViewSet):
     @action(
         methods=['GET'],
         url_path='statistics',
-        detail=True,
+        detail=False,
     )
-    def statistics(self, request: Request, pk: int):
+    def statistics(self, request: Request):
         """Статистика по проекту."""
+        projects_id = request.query_params.getlist('project')
         statistics_data = get_statistics(
-            project=self.get_object(),
+            projects_id=projects_id,
+            queryset=self.filter_queryset(self.get_queryset()),
         )
 
         return Response(
