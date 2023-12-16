@@ -1,11 +1,5 @@
-from typing import List
-
 import django_filters
 from django.utils.translation import gettext_lazy as _
-from rest_framework import status
-from rest_framework.decorators import action
-from rest_framework.request import Request
-from rest_framework.response import Response
 
 from server.apps.g_mtg.api.serializers import (
     CreateProjectSerializer,
@@ -16,8 +10,6 @@ from server.apps.g_mtg.api.serializers import (
 from server.apps.g_mtg.models import Project
 from server.apps.g_mtg.services.project import (
     create_project,
-    create_project_sale_channel,
-    get_statistics,
 )
 from server.apps.services.filters_mixins import CreatedUpdatedDateFilterMixin
 from server.apps.services.views import RetrieveListCreateUpdateViewSet
@@ -44,7 +36,6 @@ class ProjectFilter(
             'product_name',
             'name',
             'description',
-            'prompt',
         )
 
 
@@ -69,10 +60,6 @@ class ProjectViewSet(RetrieveListCreateUpdateViewSet):
         'name',
     )
     filterset_class = ProjectFilter
-    permission_type_map = {
-        **RetrieveListCreateUpdateViewSet.permission_type_map,
-        'statistics': 'statistics',
-    }
 
     def get_queryset(self):  # noqa: WPS615
         """Фильтруем выдачу проектов."""
@@ -89,22 +76,4 @@ class ProjectViewSet(RetrieveListCreateUpdateViewSet):
         serializer.instance = create_project(
             validated_data=serializer.validated_data,
             user=self.request.user,
-        )
-
-    @action(
-        methods=['GET'],
-        url_path='statistics',
-        detail=False,
-    )
-    def statistics(self, request: Request):
-        """Статистика по проекту."""
-        projects_id = request.query_params.getlist('project')
-        statistics_data = get_statistics(
-            projects_id=projects_id,
-            queryset=self.filter_queryset(self.get_queryset()),
-        )
-
-        return Response(
-            data=statistics_data,
-            status=status.HTTP_200_OK,
         )

@@ -25,11 +25,6 @@ class Project(AbstractBaseModel):
         verbose_name=_('Описание'),
         blank=True,
     )
-    prompt = models.CharField(
-        verbose_name=_('Подсказка для генерации продукта в рамках проекта'),
-        max_length=settings.MAX_STRING_LENGTH,
-        blank=True,
-    )
     users = models.ManyToManyField(
         to='user.User',
         through='g_mtg.ProjectUser',

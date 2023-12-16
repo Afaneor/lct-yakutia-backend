@@ -1,6 +1,9 @@
 import django_filters
 
-from server.apps.g_mtg.api.serializers import ProductSerializer
+from server.apps.g_mtg.api.serializers import (
+    ListProductSerializer,
+    ProductSerializer,
+)
 from server.apps.g_mtg.models import Product
 from server.apps.services.views import BaseReadOnlyViewSet
 
@@ -23,7 +26,8 @@ class ProductViewSet(BaseReadOnlyViewSet):
     """Продукт банка."""
 
     serializer_class = ProductSerializer
-    queryset = Product.objects.all()
+    list_serializer_class = ListProductSerializer
+    queryset = Product.objects.prefetch_related('projects')
     ordering_fields = '__all__'
     search_fields = (
         'name',

@@ -1,7 +1,4 @@
-from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 
 from server.apps.g_mtg.api.serializers import BaseProductSerializer
 from server.apps.g_mtg.api.serializers.sale_channel import (
@@ -24,7 +21,6 @@ class ListProjectSerializer(ModelSerializerWithPermission):
             'product',
             'name',
             'description',
-            'prompt',
             'created_at',
             'updated_at',
             'permission_rules',
@@ -45,7 +41,6 @@ class ProjectSerializer(ModelSerializerWithPermission):
             'product',
             'name',
             'description',
-            'prompt',
             'users',
             'sales_channels',
             'created_at',
@@ -64,7 +59,6 @@ class CreateProjectSerializer(serializers.ModelSerializer):
             'product',
             'name',
             'description',
-            'prompt',
         )
 
 
@@ -77,20 +71,4 @@ class UpdateProjectSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'description',
-            'prompt',
         )
-
-
-class UploadDataSerializer(serializers.Serializer):
-    """Загрузка файла в систему."""
-
-    file = serializers.FileField(required=True)
-    client_data_decoding = serializers.JSONField(required=True)
-
-    def validate_file(self, file: InMemoryUploadedFile) -> InMemoryUploadedFile:
-        """Проверка файла."""
-        if file.content_type != 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-            raise ValidationError(
-                _('Возможно загружать только xlsx-файл'),
-            )
-        return file

@@ -24,7 +24,7 @@ def is_manager_within_project(user, project):
 view_project = is_owned_by_project
 add_project = is_authenticated
 change_project = is_manager
-statistics_project = is_manager
+# statistics_project = is_manager
 
 
 def has_view_project(user, project):
@@ -42,13 +42,13 @@ def has_change_project(user, project):
     return change_project(user, project)
 
 
-def has_statistics_project(user):
-    """Права на просмотр статистики."""
-    return statistics_project(user)
+# def has_statistics_project(user):
+#     """Права на просмотр статистики."""
+#     return statistics_project(user)
 
 
 rules.set_perm('g_mtg.view_project', has_view_project)
 rules.set_perm('g_mtg.add_project', has_add_project)
 rules.set_perm('g_mtg.change_project', has_change_project)
-rules.set_perm('g_mtg.statistics_project', has_statistics_project)
+# rules.set_perm('g_mtg.statistics_project', has_statistics_project)
 rules.set_perm('g_mtg.list_project', is_authenticated)

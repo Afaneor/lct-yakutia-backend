@@ -1,6 +1,7 @@
 from typing import Any, Dict, List
 
 import django_filters
+import psycopg2
 import pylightxl as xl
 from django.utils.translation import gettext_lazy as _
 from rest_framework import status
@@ -11,8 +12,10 @@ from rest_framework.response import Response
 from server.apps.g_mtg.api.serializers import (
     MultipleCreateProjectSaleChannelSerializer,
     ProjectSaleChannelSerializer,
-    UploadDataSerializer,
+    UploadDataFromFileSerializer,
 )
+from server.apps.g_mtg.api.serializers.project_sale_channel import \
+    UploadDataFromPostgresSerializer
 from server.apps.g_mtg.models import ProjectSaleChannel
 from server.apps.g_mtg.services.project import (
     create_project,
@@ -54,6 +57,7 @@ class ProjectSaleChannelViewSet(BaseReadOnlyViewSet):
     permission_type_map = {
         **BaseReadOnlyViewSet.permission_type_map,
         'add_client_from_file': 'add_client',
+        'add_client_from_postgres': 'add_client',
         'multiple_create': 'add_channel',
         'statistics': 'statistics',
     }
@@ -62,7 +66,7 @@ class ProjectSaleChannelViewSet(BaseReadOnlyViewSet):
         methods=['POST'],
         url_path='add-client-from-file',
         detail=True,
-        serializer_class=UploadDataSerializer,
+        serializer_class=UploadDataFromFileSerializer,
     )
     def add_client_from_file(self, request: Request, pk: int):
         """Загрузка данных по клиенты."""
@@ -97,6 +101,27 @@ class ProjectSaleChannelViewSet(BaseReadOnlyViewSet):
             data={'detail': _('Данные загружены')},
             status=status.HTTP_201_CREATED
         )
+
+    @action(  # type: ignore
+        methods=['POST'],
+        url_path='add-client-from-postgres',
+        detail=True,
+        serializer_class=UploadDataFromPostgresSerializer,
+    )
+    def add_client_from_postgres(self, request: Request, pk: int):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        vd = serializer.validated_data
+        conn = psycopg2.connect(
+            dbname=vd['dbname'],
+            user=vd['user'],
+            password=vd['password'],
+            host=vd['host'],
+            port=vd['port'],
+        )
+        cur = conn.cursor()
+        cur.execute(vd['sql'])
+        cur.fetchall()
 
     @action(
         methods=['POST'],

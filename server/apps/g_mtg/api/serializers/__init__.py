@@ -1,5 +1,9 @@
-from server.apps.g_mtg.api.serializers.product import (
+from server.apps.g_mtg.api.serializers.nested import (
     BaseProductSerializer,
+    BaseProjectSerializer,
+)
+from server.apps.g_mtg.api.serializers.product import (
+    ListProductSerializer,
     ProductSerializer,
 )
 from server.apps.g_mtg.api.serializers.project import (
@@ -7,11 +11,11 @@ from server.apps.g_mtg.api.serializers.project import (
     ListProjectSerializer,
     ProjectSerializer,
     UpdateProjectSerializer,
-    UploadDataSerializer,
 )
 from server.apps.g_mtg.api.serializers.project_sale_channel import (
     MultipleCreateProjectSaleChannelSerializer,
     ProjectSaleChannelSerializer,
+    UploadDataFromFileSerializer,
 )
 from server.apps.g_mtg.api.serializers.project_user import (
     CreateProjectUserSerializer,
@@ -24,18 +28,23 @@ from server.apps.g_mtg.api.serializers.sale_channel import (
 
 __all__ = [
     'BaseProductSerializer',
+    'BaseProjectSerializer',
+
+
+    'ListProductSerializer',
     'ProductSerializer',
 
-    'ListProjectSerializer',
     'CreateProjectSerializer',
+    'ListProjectSerializer',
     'ProjectSerializer',
     'UpdateProjectSerializer',
-    'UploadDataSerializer',
 
     'BaseSaleChannelSerializer',
     'SaleChannel',
+
     'MultipleCreateProjectSaleChannelSerializer',
     'ProjectSaleChannelSerializer',
+    'UploadDataFromFileSerializer',
 
     'ProjectUserSerializer',
     'CreateProjectUserSerializer',
