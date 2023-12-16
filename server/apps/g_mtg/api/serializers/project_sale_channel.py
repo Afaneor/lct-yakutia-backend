@@ -46,6 +46,21 @@ class MultipleCreateProjectSaleChannelSerializer(serializers.Serializer):
         )
 
 
+class UpdateProjectSaleChannelSerializer(serializers.ModelSerializer):
+    """Изменение канала продаж для проекта."""
+
+    class Meta(object):
+        model = ProjectSaleChannel
+        fields = (
+            'id',
+            'prompt',
+        )
+
+
+
+
+
+
 class UploadDataFromFileSerializer(serializers.Serializer):
     """Загрузка файла с информацией о клиентах в систему."""
 

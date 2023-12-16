@@ -14,7 +14,7 @@ from server.apps.g_mtg.api.serializers import (
     MultipleCreateProjectSaleChannelSerializer,
     ProjectSaleChannelSerializer,
     UploadDataFromFileSerializer, UploadDataFromPostgresSerializer,
-    UploadDataFromMongoSerializer,
+    UploadDataFromMongoSerializer, UpdateProjectSaleChannelSerializer,
 )
 from server.apps.g_mtg.models import ProjectSaleChannel
 from server.apps.g_mtg.services.project import (
@@ -22,8 +22,7 @@ from server.apps.g_mtg.services.project import (
     create_project_sale_channel,
 )
 from server.apps.services.views import (
-    BaseReadOnlyViewSet,
-    RetrieveListCreateViewSet,
+    RetrieveListUpdateViewSet,
 )
 from server.apps.user_request.services.user_reques import (
     create_user_request_with_data_from_file,
@@ -43,11 +42,11 @@ class ProjectSaleChannelFilter(django_filters.FilterSet):
         )
 
 
-class ProjectSaleChannelViewSet(BaseReadOnlyViewSet):
+class ProjectSaleChannelViewSet(RetrieveListUpdateViewSet):
     """Продукт банка."""
 
     serializer_class = ProjectSaleChannelSerializer
-    create_serializer_class = MultipleCreateProjectSaleChannelSerializer
+    update_serializer_class = UpdateProjectSaleChannelSerializer
     queryset = ProjectSaleChannel.objects.all()
     ordering_fields = '__all__'
     search_fields = (
@@ -55,7 +54,7 @@ class ProjectSaleChannelViewSet(BaseReadOnlyViewSet):
     )
     filterset_class = ProjectSaleChannelFilter
     permission_type_map = {
-        **BaseReadOnlyViewSet.permission_type_map,
+        **RetrieveListUpdateViewSet.permission_type_map,
         'add_client_from_file': 'add_client',
         'add_client_from_postgres': 'add_client',
         'add_client_from_mongo': 'add_client',

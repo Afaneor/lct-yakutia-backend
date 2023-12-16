@@ -16,6 +16,7 @@ from server.apps.g_mtg.api.serializers.project import (
 from server.apps.g_mtg.api.serializers.project_sale_channel import (
     MultipleCreateProjectSaleChannelSerializer,
     ProjectSaleChannelSerializer,
+    UpdateProjectSaleChannelSerializer,
     UploadDataFromFileSerializer,
     UploadDataFromPostgresSerializer,
     UploadDataFromMongoSerializer,
@@ -47,6 +48,7 @@ __all__ = [
 
     'MultipleCreateProjectSaleChannelSerializer',
     'ProjectSaleChannelSerializer',
+    'UpdateProjectSaleChannelSerializer',
     'UploadDataFromFileSerializer',
     'UploadDataFromPostgresSerializer',
     'UploadDataFromMongoSerializer',
