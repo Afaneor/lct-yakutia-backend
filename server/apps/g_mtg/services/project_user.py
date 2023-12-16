@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import QuerySet
 
 from server.apps.g_mtg.models import ProjectUser
-from server.apps.services.enums import UserRoleInProject, SuccessType
+from server.apps.services.enums import SuccessType, UserRoleInProject
 from server.apps.user_request.models import UserRequest
 
 

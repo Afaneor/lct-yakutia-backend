@@ -8,6 +8,11 @@ from server.apps.services.base_model import AbstractBaseModel
 class Product(AbstractBaseModel):
     """Продукт банка."""
 
+    image = models.ImageField(
+        verbose_name=_('Картинка продукта'),
+        upload_to='media',
+        blank=True,
+    )
     name = models.CharField(
         verbose_name=_('Название'),
         max_length=settings.MAX_STRING_LENGTH,
@@ -19,6 +24,10 @@ class Product(AbstractBaseModel):
     )
     description = models.TextField(
         verbose_name=_('Описание'),
+    )
+    link = models.URLField(
+        verbose_name=_('Ссылка на продукт'),
+        blank=True,
     )
 
     class Meta(AbstractBaseModel.Meta):

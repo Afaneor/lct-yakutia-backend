@@ -24,6 +24,8 @@ class BaseUserSerializer(serializers.ModelSerializer):
 class UserSerializer(ModelSerializerWithPermission):
     """Детальная информация о пользователе."""
 
+    availability_statistics = serializers.SerializerMethodField()
+
     class Meta(object):
         model = User
         fields = (
@@ -37,5 +39,13 @@ class UserSerializer(ModelSerializerWithPermission):
             'last_name',
             'middle_name',
             'is_active',
+            'role',
             'permission_rules',
         )
+
+    def get_availability_statistics(self, user: User):
+        """Доступность статистики."""
+        user_role = user.role
+        if isinstance(user_role, dict):
+            return UserRoleInProject.MANAGER in user_role.values()  # type: ignore
+        return False

@@ -12,6 +12,7 @@ class BaseSaleChannelSerializer(serializers.ModelSerializer):
         model = SaleChannel
         fields = (
             'id',
+            'image',
             'name',
             'key_name',
             'description',
@@ -25,6 +26,7 @@ class SaleChannelSerializer(ModelSerializerWithPermission):
         model = SaleChannel
         fields = (
             'id',
+            'image',
             'name',
             'key_name',
             'description',

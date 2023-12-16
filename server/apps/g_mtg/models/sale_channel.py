@@ -8,6 +8,11 @@ from server.apps.services.base_model import AbstractBaseModel
 class SaleChannel(AbstractBaseModel):
     """Канал продаж."""
 
+    image = models.ImageField(
+        verbose_name=_('Картинка канала'),
+        upload_to='media',
+        blank=True,
+    )
     name = models.CharField(
         verbose_name=_('Название'),
         max_length=settings.MAX_STRING_LENGTH,

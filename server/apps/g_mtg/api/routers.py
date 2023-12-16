@@ -4,9 +4,9 @@ from rest_framework.routers import APIRootView
 from server.apps.g_mtg.api.views import (  # ProjectSaleChannelViewSet,; ProjectUserViewSet,
     ProductViewSet,
     ProjectSaleChannelViewSet,
+    ProjectUserViewSet,
     ProjectViewSet,
     SaleChannelViewSet,
-    ProjectUserViewSet,
 )
 from server.apps.services.custom_router.api_router import ApiRouter
 from server.apps.services.custom_router.nested_router import (

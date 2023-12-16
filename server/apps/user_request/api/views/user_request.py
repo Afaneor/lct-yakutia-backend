@@ -2,12 +2,14 @@ import django_filters
 from rest_framework.decorators import action
 
 from server.apps.services.views import RetrieveListCreateViewSet
-from server.apps.user_request.api.serializers import UserRequestSerializer, \
-    BaseMessageSerializer
+from server.apps.user_request.api.serializers import (
+    BaseMessageSerializer,
+    UserRequestSerializer,
+)
 from server.apps.user_request.api.serializers.user_request import (
     CreateUserRequestSerializer,
 )
-from server.apps.user_request.models import UserRequest, Message
+from server.apps.user_request.models import Message, UserRequest
 from server.apps.user_request.services.user_reques import create_user_request
 
 

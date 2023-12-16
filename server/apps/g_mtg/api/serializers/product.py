@@ -11,9 +11,11 @@ class BaseProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = (
             'id',
+            'image',
             'name',
             'key_name',
             'description',
+            'link',
         )
 
 
@@ -24,9 +26,11 @@ class ProductSerializer(ModelSerializerWithPermission):
         model = Product
         fields = (
             'id',
+            'image'
             'name',
             'key_name',
             'description',
+            'link',
             'created_at',
             'updated_at',
             'permission_rules',
