@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
+from server.apps.llm_request.models import Message
 from server.apps.services.serializers import ModelSerializerWithPermission
-from server.apps.user_request.models import Message
 
 
 class BaseMessageSerializer(serializers.ModelSerializer):
@@ -24,7 +24,7 @@ class MessageSerializer(ModelSerializerWithPermission):
         model = Message
         fields = (
             'id',
-            'user_request',
+            'marketing_text_request',
             'text',
             'message_type',
             'status',

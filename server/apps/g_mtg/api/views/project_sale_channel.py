@@ -13,21 +13,21 @@ from rest_framework.response import Response
 from server.apps.g_mtg.api.serializers import (
     MultipleCreateProjectSaleChannelSerializer,
     ProjectSaleChannelSerializer,
-    UploadDataFromFileSerializer, UploadDataFromPostgresSerializer,
-    UploadDataFromMongoSerializer, UpdateProjectSaleChannelSerializer,
+    UpdateProjectSaleChannelSerializer,
+    UploadDataFromFileSerializer,
+    UploadDataFromMongoSerializer,
+    UploadDataFromPostgresSerializer,
 )
 from server.apps.g_mtg.models import ProjectSaleChannel
 from server.apps.g_mtg.services.project import (
     create_project,
     create_project_sale_channel,
 )
-from server.apps.services.views import (
-    RetrieveListUpdateViewSet,
-)
-from server.apps.user_request.services.user_reques import (
+from server.apps.llm_request.services.user_reques import (
     create_user_request_with_data_from_file,
     validate_client_data_decoding,
 )
+from server.apps.services.views import RetrieveListUpdateViewSet
 
 
 class ProjectSaleChannelFilter(django_filters.FilterSet):
@@ -74,26 +74,26 @@ class ProjectSaleChannelViewSet(RetrieveListUpdateViewSet):
         serializer.is_valid(raise_exception=True)
         with request.FILES['file'].open(mode='r') as file:
             db = xl.readxl(file)
-            file_data: List[Dict[str, Any]] = []
-            file_header: List[Any] = []
+            all_client_data: List[Dict[str, Any]] = []
+            client_data_keys: List[Any] = []
             for list_name in db.ws_names:
                 for index, row in enumerate(db.ws(ws=list_name).rows):
                     if index != 0:
-                        file_data.append(dict(zip(file_header, row)))
+                        all_client_data.append(dict(zip(client_data_keys, row)))
                     else:
-                        file_header = row
+                        client_data_keys = row
 
         client_data_decoding = serializer.validated_data['client_data_decoding']
         validate_client_data_decoding(
             client_data_decoding=client_data_decoding,
-            file_header=file_header,
+            client_data_keys=client_data_keys,
         )
 
         create_user_request_with_data_from_file(
             project_sale_channel=self.get_object(),
             user=self.request.user,
             file_name=request.FILES['file'].name,
-            all_client_data=file_data,
+            all_client_data=all_client_data,
             client_data_decoding=client_data_decoding,
         )
 

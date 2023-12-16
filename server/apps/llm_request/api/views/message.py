@@ -1,8 +1,8 @@
 import django_filters
 
+from server.apps.llm_request.api.serializers import MessageSerializer
+from server.apps.llm_request.models import Message
 from server.apps.services.views import RetrieveListCreateViewSet
-from server.apps.user_request.api.serializers import MessageSerializer
-from server.apps.user_request.models import Message
 
 
 class MessageFilter(django_filters.FilterSet):
@@ -12,7 +12,7 @@ class MessageFilter(django_filters.FilterSet):
         model = Message
         fields = (
             'id',
-            'user_request',
+            'marketing_text_request',
             'text',
             'message_type',
             'status',
@@ -23,7 +23,7 @@ class MessageViewSet(RetrieveListCreateViewSet):
     """Сообщение."""
 
     serializer_class = MessageSerializer
-    queryset = Message.objects.select_related('user_request')
+    queryset = Message.objects.select_related('marketing_text_request')
     ordering_fields = '__all__'
     search_fields = (
         'text',

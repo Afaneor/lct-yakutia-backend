@@ -4,10 +4,14 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from server.apps.services.base_model import AbstractBaseModel
-from server.apps.services.enums import RequestStatus, SuccessType
+from server.apps.services.enums import (
+    RequestStatus,
+    SourceClientInfo,
+    SuccessType,
+)
 
 
-class UserRequest(AbstractBaseModel):
+class MarketingTextRequest(AbstractBaseModel):
     """Запрос пользователя."""
 
     project_sale_channel = models.ForeignKey(
@@ -24,21 +28,6 @@ class UserRequest(AbstractBaseModel):
         related_name='users_requests',
         db_index=True,
     )
-    client_id = models.CharField(
-        verbose_name=_('ID клиента из сторонних ресурсов'),
-        max_length=settings.MAX_STRING_LENGTH,
-        blank=True,
-    )
-    source_client_info = models.CharField(
-        verbose_name=_('Источник информации о клиенте'),
-        max_length=settings.MAX_STRING_LENGTH,
-    )
-    client_data = models.JSONField(
-        verbose_name=_('Данные о клиенте'),
-    )
-    client_data_decoding = models.JSONField(
-        verbose_name=_('Расшифровка данных о клиенте'),
-    )
     status = models.CharField(
         verbose_name=_('Статус запроса'),
         max_length=settings.MAX_STRING_LENGTH,
@@ -53,8 +42,8 @@ class UserRequest(AbstractBaseModel):
     )
 
     class Meta(AbstractBaseModel.Meta):
-        verbose_name = _('Запрос пользователя')
-        verbose_name_plural = _('Запросы пользователей')
+        verbose_name = _('Запрос на подбор канала для продукта')
+        verbose_name_plural = _('Запрос на подбор каналов для продуктов')
         constraints = [
             models.UniqueConstraint(
                 fields=('project_sale_channel', 'client_data'),

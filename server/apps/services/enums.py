@@ -58,3 +58,12 @@ class UserRoleInProject(models.TextChoices):
 
     MANAGER = 'manager', _('Руководитель')
     PERFORMER = 'performer', _('Исполнитель')
+
+
+class SourceClientInfo(models.TextChoices):
+    """Источник информации о клиенте"""
+
+    XLSX_FILE = 'xlsx_file', _('Файл xlsx')
+    POSTGRES = 'postgres', _('Данные из postgres')
+    MONGO = 'mongo', _('Данные из mongo')
+    API = 'api', _('Данные из api')

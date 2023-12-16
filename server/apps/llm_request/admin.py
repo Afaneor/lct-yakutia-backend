@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from server.apps.user_request.models import Message, UserRequest
+from server.apps.llm_request.models import MarketingTextRequest, Message
 
 
 @admin.register(Message)
@@ -9,7 +9,7 @@ class MessageAdmin(admin.ModelAdmin[Message]):
 
     list_display = (
         'id',
-        'user_request',
+        'marketing_text_request',
         'message_type',
         'status',
     )
@@ -25,17 +25,17 @@ class MessageAdmin(admin.ModelAdmin[Message]):
     )
     ordering = (
         'id',
-        'user_request',
+        'marketing_text_request',
         'message_type',
         'status',
     )
     raw_id_fields = (
-        'user_request',
+        'marketing_text_request',
     )
 
 
-@admin.register(UserRequest)
-class UserRequestAdmin(admin.ModelAdmin[UserRequest]):
+@admin.register(MarketingTextRequest)
+class MarketingTextRequestAdmin(admin.ModelAdmin[MarketingTextRequest]):
     """Запрос пользователя."""
 
     list_display = (

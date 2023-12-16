@@ -1,10 +1,10 @@
-from typing import Any, List, Dict
+from typing import Any, Dict, List
 
 from django.db.models import QuerySet
 
-from server.apps.g_mtg.models import ProjectUser, Project
+from server.apps.g_mtg.models import Project, ProjectUser
+from server.apps.llm_request.models import MarketingTextRequest
 from server.apps.services.enums import SuccessType
-from server.apps.user_request.models import UserRequest
 
 
 def get_statistics(
@@ -29,7 +29,7 @@ def get_statistics(
                     {
                         'type': 'круговая',
                         'name': 'Стата по продуктам в проектах',
-                        'value': UserRequest.objects.filter(
+                        'value': MarketingTextRequest.objects.filter(
                             project_sale_channel__project__in=projects_id,
                         ).values(
                             product=models.F('project_sale_channel__project__product'),
@@ -38,7 +38,7 @@ def get_statistics(
                     {
                         'type': 'круговая',
                         'name': 'Стата по типу успешности в рамка продукта',
-                        'value': UserRequest.objects.filter(
+                        'value': MarketingTextRequest.objects.filter(
                             project_sale_channel__project__in=projects_id,
                             success_type__in={SuccessType.SOLD, SuccessType.INTEREST},
                         ).values(
@@ -47,13 +47,13 @@ def get_statistics(
                     },
                 ],
             },
-            'user_request': {
+            'marketing_text_request': {
                 'name': 'Статистика по запросам',
                 'data': [
                     {
                         'type': 'круговая',
                         'name': 'Стата по успешности запросов в проектах',
-                        'value': UserRequest.objects.filter(
+                        'value': MarketingTextRequest.objects.filter(
                             project_sale_channel__project__in=projects_id,
                         ).values(
                             'success_type',
@@ -77,7 +77,7 @@ def get_statistics(
                 {
                     'type': 'круговая',
                     'name': 'Стата по типу успешности в рамка продукта',
-                    'value': UserRequest.objects.filter(
+                    'value': MarketingTextRequest.objects.filter(
                         project_sale_channel__project__in=projects_id,
                         success_type__in={SuccessType.SOLD, SuccessType.INTEREST},
                     ).values(
@@ -86,13 +86,13 @@ def get_statistics(
                 },
             ],
         },
-        'user_request': {
+        'marketing_text_request': {
             'name': 'Статистика по запросам',
             'data': [
                 {
                     'type': 'круговая',
                     'name': 'Стата по успешности запросов в проектах',
-                    'value': UserRequest.objects.filter(
+                    'value': MarketingTextRequest.objects.filter(
                         project_sale_channel__project__in=projects_id,
                     ).values(
                         'success_type',

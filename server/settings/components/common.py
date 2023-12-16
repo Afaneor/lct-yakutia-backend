@@ -46,7 +46,7 @@ INSTALLED_APPS: Tuple[str, ...] = (
 
     # Your apps go here:
     'server.apps.g_mtg',
-    'server.apps.user_request',
+    'server.apps.llm_request',
     'server.apps.user',
 
     # documentation

@@ -15,11 +15,27 @@ from server.apps.services.enums import (
 class Message(AbstractBaseModel):
     """Сообщение."""
 
-    user_request = models.ForeignKey(
-        to='user_request.UserRequest',
+    marketing_text_request = models.ForeignKey(
+        to='marketing_text_request.MarketingTextRequest',
         on_delete=models.CASCADE,
         verbose_name=_('Запрос пользователя'),
         related_name='messages',
+        db_index=True,
+    )
+    parent = models.ForeignKey(
+        to='self',
+        verbose_name=_('Родительское сообщение'),
+        related_name='parents',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
+    user = models.ForeignKey(
+        to='user.User',
+        on_delete=models.CASCADE,
+        verbose_name=_('Пользователь'),
+        related_name='messages',
+        db_index=True,
     )
     text = models.TextField(
         verbose_name=_('Сообщение'),
@@ -51,4 +67,4 @@ class Message(AbstractBaseModel):
         ]
 
     def __str__(self):
-        return f'{self.user_request}'
+        return f'{self.marketing_text_request}'

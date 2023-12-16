@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import QuerySet
 
 from server.apps.g_mtg.models import Product, Project, ProjectSaleChannel
-from server.apps.user_request.models import UserRequest
+from server.apps.llm_request.models import MarketingTextRequest
 
 
 def get_statistics_for_product(
@@ -28,13 +28,13 @@ def get_statistics_for_product(
                     },
                 ],
             },
-            'user_request': {
+            'marketing_text_request': {
                 'name': 'Статистика по запросам пользователей',
                 'data': [
                     {
                         'type': 'circular',
                         'name': 'Количество запросов в модель в рамках проекта по статусам',
-                        'value': UserRequest.objects.filter(
+                        'value': MarketingTextRequest.objects.filter(
                             project_sale_channel__project__in=projects_id,
                         ).values(
                             'status',
@@ -45,7 +45,7 @@ def get_statistics_for_product(
                     {
                         'type': 'circular',
                         'name': 'Количество запросов в модель в рамках проекта по успешности',
-                        'value': UserRequest.objects.filter(
+                        'value': MarketingTextRequest.objects.filter(
                             project_sale_channel__project__in=projects_id,
                         ).values(
                             'success_type',
@@ -90,13 +90,13 @@ def get_statistics_for_product(
                 },
             ],
         },
-        'user_request': {
+        'marketing_text_request': {
             'name': 'Статистика по запросам пользователей',
             'data': [
                 {
                     'type': 'circular',
                     'name': 'Количество запросов в модель в рамках продукта по статусам',
-                    'value': UserRequest.objects.filter(
+                    'value': MarketingTextRequest.objects.filter(
                         project_sale_channel__project__product__in=products_id,
                     ).values(
                         'status',
@@ -107,7 +107,7 @@ def get_statistics_for_product(
                 {
                     'type': 'circular',
                     'name': 'Количество запросов в модель в рамках продукта по успешности',
-                    'value': UserRequest.objects.filter(
+                    'value': MarketingTextRequest.objects.filter(
                         project_sale_channel__project__product__in=products_id,
                     ).values(
                         'success_type',

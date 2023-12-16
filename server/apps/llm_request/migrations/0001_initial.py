@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='UserRequest',
+            name='MarketingTextRequest',
             fields=[
                 (
                     'id',

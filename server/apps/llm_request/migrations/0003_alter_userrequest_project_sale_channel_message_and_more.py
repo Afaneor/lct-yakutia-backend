@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('g_mtg', '0002_alter_projectuser_project'),
         (
-            'user_request',
+            'marketing_text_request',
             '0002_userrequest_unique_client_data_for_project_sale_channel_and_more',
         ),
     ]
@@ -75,11 +75,11 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    'user_request',
+                    'marketing_text_request',
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         related_name='messages',
-                        to='user_request.userrequest',
+                        to='marketing_text_request.userrequest',
                         verbose_name='Запрос пользователя',
                     ),
                 ),
