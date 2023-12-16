@@ -4,8 +4,12 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from server.apps.services.base_model import AbstractBaseModel
-from server.apps.services.enums import ClientType, MessageType, RequestStatus, \
-    MessageStatus
+from server.apps.services.enums import (
+    ClientType,
+    MessageStatus,
+    MessageType,
+    RequestStatus,
+)
 
 
 class Message(AbstractBaseModel):

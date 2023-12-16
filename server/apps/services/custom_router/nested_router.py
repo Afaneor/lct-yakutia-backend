@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections import defaultdict
 from typing import Iterable, Optional, Union
 
-from rest_framework.routers import BaseRouter, SimpleRouter, DefaultRouter
+from rest_framework.routers import BaseRouter, DefaultRouter, SimpleRouter
 from rest_framework.viewsets import ViewSet
 from rest_framework_extensions.utils import compose_parent_pk_kwarg_name
 

@@ -1,13 +1,15 @@
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from server.apps.g_mtg.api.serializers import BaseProductSerializer
-from server.apps.g_mtg.api.serializers.sale_channel import BaseSaleChannelSerializer
+from server.apps.g_mtg.api.serializers.sale_channel import (
+    BaseSaleChannelSerializer,
+)
 from server.apps.g_mtg.models import Project
 from server.apps.services.serializers import ModelSerializerWithPermission
 from server.apps.user.api.serializers import BaseUserSerializer
-from django.utils.translation import gettext_lazy as _
 
 
 class ListProjectSerializer(ModelSerializerWithPermission):
@@ -76,17 +78,6 @@ class UpdateProjectSerializer(serializers.ModelSerializer):
             'name',
             'description',
             'prompt',
-        )
-
-
-class CreateProjectSaleChannelSerializer(serializers.ModelSerializer):
-    """Создание канала продаж для проекта."""
-
-    class Meta(object):
-        model = Project
-        fields = (
-            'id',
-            'sales_channels',
         )
 
 

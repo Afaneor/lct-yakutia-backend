@@ -1,9 +1,11 @@
+from rest_framework import serializers
+
 from server.apps.g_mtg.models import Project, SaleChannel
 from server.apps.services.serializers import ModelSerializerWithPermission
 from server.apps.user.api.serializers import BaseUserSerializer
 
 
-class BaseSaleChannelSerializer(ModelSerializerWithPermission):
+class BaseSaleChannelSerializer(serializers.ModelSerializer):
     """Базовая информация о канале продаж."""
 
     class Meta(object):

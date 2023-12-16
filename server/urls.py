@@ -15,7 +15,7 @@ from django.urls import include, path
 from health_check import urls as health_urls
 
 from server.apps.g_mtg.api.routers import router as g_mtg_router
-# from server.apps.user_request.api.routers import router as user_request_router
+from server.apps.user_request.api.routers import router as user_request_router
 from server.apps.services.custom_router.api_router import router
 from server.apps.user.api.routers import router as user_router
 from server.url_components import (
@@ -28,7 +28,7 @@ from server.url_components import (
 # Регистрируем routers приложений.
 router.register('g-gmp', g_mtg_router, 'g-gmp')
 router.register('user', user_router, 'user')
-# router.register('user-request', user_request, 'user-request')
+router.register('user-request', user_request_router, 'user-request')
 
 api_url = [
     path('api/', include((router.urls, 'api'))),

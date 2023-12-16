@@ -1,20 +1,31 @@
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 import django_filters
+import pylightxl as xl
+from django.utils.translation import gettext_lazy as _
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from server.apps.g_mtg.api.serializers import ProjectSaleChannelSerializer, \
-    UploadDataSerializer
+from server.apps.g_mtg.api.serializers import (
+    MultipleCreateProjectSaleChannelSerializer,
+    ProjectSaleChannelSerializer,
+    UploadDataSerializer,
+)
 from server.apps.g_mtg.models import ProjectSaleChannel
-from server.apps.services.views import BaseReadOnlyViewSet
-import pylightxl as xl
-
-from server.apps.user_request.services.user_reques import \
-    validate_client_data_decoding, create_user_request
-from django.utils.translation import gettext_lazy as _
+from server.apps.g_mtg.services.project import (
+    create_project,
+    create_project_sale_channel,
+)
+from server.apps.services.views import (
+    BaseReadOnlyViewSet,
+    RetrieveListCreateViewSet,
+)
+from server.apps.user_request.services.user_reques import (
+    create_user_request_with_data_from_file,
+    validate_client_data_decoding,
+)
 
 
 class ProjectSaleChannelFilter(django_filters.FilterSet):
@@ -33,6 +44,7 @@ class ProjectSaleChannelViewSet(BaseReadOnlyViewSet):
     """Продукт банка."""
 
     serializer_class = ProjectSaleChannelSerializer
+    create_serializer_class = MultipleCreateProjectSaleChannelSerializer
     queryset = ProjectSaleChannel.objects.all()
     ordering_fields = '__all__'
     search_fields = (
@@ -41,16 +53,18 @@ class ProjectSaleChannelViewSet(BaseReadOnlyViewSet):
     filterset_class = ProjectSaleChannelFilter
     permission_type_map = {
         **BaseReadOnlyViewSet.permission_type_map,
-        'add_client': None,
+        'add_client_from_file': 'add_client',
+        'multiple_create': 'add_channel',
+        'statistics': 'statistics',
     }
 
     @action(  # type: ignore
         methods=['POST'],
-        url_path='add-client',
+        url_path='add-client-from-file',
         detail=True,
         serializer_class=UploadDataSerializer,
     )
-    def add_client(self, request: Request, pk: int):
+    def add_client_from_file(self, request: Request, pk: int):
         """Загрузка данных по клиенты."""
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -71,7 +85,7 @@ class ProjectSaleChannelViewSet(BaseReadOnlyViewSet):
             file_header=file_header,
         )
 
-        create_user_request(
+        create_user_request_with_data_from_file(
             project_sale_channel=self.get_object(),
             user=self.request.user,
             file_name=request.FILES['file'].name,
@@ -84,3 +98,21 @@ class ProjectSaleChannelViewSet(BaseReadOnlyViewSet):
             status=status.HTTP_201_CREATED
         )
 
+    @action(
+        methods=['POST'],
+        url_path='multiple-create',
+        detail=False,
+        serializer_class=MultipleCreateProjectSaleChannelSerializer,
+    )
+    def multiple_create(self, request: Request):
+        """Добавление в проект каналов связи."""
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        create_project_sale_channel(
+            validated_data=serializer.validated_data,
+        )
+
+        return Response(
+            data=serializer.data,
+            status=status.HTTP_201_CREATED,
+        )

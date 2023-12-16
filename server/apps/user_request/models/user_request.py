@@ -4,7 +4,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from server.apps.services.base_model import AbstractBaseModel
-from server.apps.services.enums import ClientType, RequestStatus, SuccessType
+from server.apps.services.enums import RequestStatus, SuccessType
 
 
 class UserRequest(AbstractBaseModel):
@@ -13,7 +13,7 @@ class UserRequest(AbstractBaseModel):
     project_sale_channel = models.ForeignKey(
         to='g_mtg.ProjectSaleChannel',
         on_delete=models.CASCADE,
-        verbose_name=_('Канал связи проетка'),
+        verbose_name=_('Канал связи проекта'),
         related_name='users_requests',
         db_index=True,
     )

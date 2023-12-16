@@ -12,7 +12,7 @@ class ProjectUser(AbstractBaseModel):
     project = models.ForeignKey(
         to='g_mtg.Project',
         on_delete=models.CASCADE,
-        verbose_name=_('Продукт банка'),
+        verbose_name=_('Проект'),
         related_name='projects_users',
         db_index=True,
     )

@@ -1,3 +1,5 @@
+from typing import Dict, Union
+
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
@@ -96,3 +98,12 @@ class User(  # type: ignore
         if not any(names_elements):
             return ''
         return ' '.join(filter(None, names_elements)).strip()
+
+    @property
+    def role(self) -> Union[str, Dict[int, str]]:
+        """Роль пользователя."""
+        if self.projects_users.all():
+            return dict(
+                list(self.projects_users.values_list("project", "role")),
+            )
+        return ""

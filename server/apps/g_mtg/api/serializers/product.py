@@ -1,8 +1,10 @@
+from rest_framework import serializers
+
 from server.apps.g_mtg.models import Product
 from server.apps.services.serializers import ModelSerializerWithPermission
 
 
-class BaseProductSerializer(ModelSerializerWithPermission):
+class BaseProductSerializer(serializers.ModelSerializer):
     """Базовая информация о продукте банка."""
 
     class Meta(object):

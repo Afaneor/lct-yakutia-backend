@@ -10,5 +10,6 @@ class GGmpConfig(AppConfig):
 
     def ready(self) -> None:
         """Подключение прав происходит при подключении app."""
-        import server.apps.g_mtg.api.routers
+        super().ready()
         import server.apps.g_mtg.permissions
+        import server.apps.g_mtg.api.routers

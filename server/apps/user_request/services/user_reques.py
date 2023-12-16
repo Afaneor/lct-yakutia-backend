@@ -1,4 +1,4 @@
-from typing import List, Any, Dict
+from typing import Any, Dict, List
 
 from django.utils.translation import gettext_lazy as _
 from rest_framework.exceptions import ValidationError
@@ -19,7 +19,7 @@ def validate_client_data_decoding(
             )
 
 
-def create_user_request(
+def create_user_request_with_data_from_file(
     user: User,
     project_sale_channel: ProjectSaleChannel,
     file_name: str,
@@ -41,3 +41,25 @@ def create_user_request(
         ],
         ignore_conflicts=True,
     )
+
+
+def create_user_request(
+    user: User,
+    validated_data: Dict[str, Any],
+):
+    """Создание запроса пользователя."""
+
+    pass
+    # UserRequest.objects.bulk_create(
+    #     [
+    #         UserRequest(
+    #             project_sale_channel=project_sale_channel,
+    #             user=user,
+    #             source_client_info=file_name,
+    #             client_data=client_data,
+    #             client_data_decoding=client_data_decoding,
+    #         )
+    #         for client_data in all_client_data
+    #     ],
+    #     ignore_conflicts=True,
+    # )
