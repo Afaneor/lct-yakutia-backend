@@ -9,8 +9,8 @@ from server.apps.llm_request.api.serializers import (
 )
 from server.apps.llm_request.models import Message
 from server.apps.llm_request.services.message import create_message
-from server.apps.services.views import RetrieveListCreateUpdateViewSet
 from server.apps.llm_request.tasks import send_request_for_get_channel_advice
+from server.apps.services.views import RetrieveListCreateUpdateViewSet
 
 
 class MessageFilter(django_filters.FilterSet):

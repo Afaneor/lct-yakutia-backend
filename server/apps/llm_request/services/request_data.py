@@ -5,14 +5,17 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 
-from server.apps.g_mtg.models import ProjectSaleChannel, Project
+from server.apps.g_mtg.models import Project, ProjectSaleChannel
 from server.apps.llm_request.models import Message
 from server.apps.llm_request.models.request_data import RequestData
 from server.apps.llm_request.services.exception import ApiException
-from server.apps.llm_request.services.formation_request import \
-    get_request_for_get_marketing_text
+from server.apps.llm_request.services.formation_request import (
+    get_request_for_get_marketing_text,
+)
 from server.apps.llm_request.services.message import ger_correct_client_data
-from server.apps.llm_request.tasks import celery_send_request_for_get_marketing_text
+from server.apps.llm_request.tasks import (
+    celery_send_request_for_get_marketing_text,
+)
 from server.apps.services.enums import MessageType
 from server.apps.user.models import User
 
@@ -215,13 +218,13 @@ def raw_multiple_creation_request_data(
         )
 
         prompt = (
-            'При формировании маркетингового предложения необходимо учитывать '
-            'следующую информацию о продукте и канале продажи.'
-            'Банковский продукт, который необходимо продать имеет следующее '
-            'описание. '
-            f"{request_data_dict.get('product_info')} "
-            'Канал продажи, который будет использоваться для продвижения '
-            'банковского продукта имеет следующее описание. '
+            'При формировании маркетингового предложения необходимо учитывать ' +
+            'следующую информацию о продукте и канале продажи.' +
+            'Банковский продукт, который необходимо продать имеет следующее ' +
+            'описание. ' +
+            f"{request_data_dict.get('product_info')} " +
+            'Канал продажи, который будет использоваться для продвижения ' +
+            'банковского продукта имеет следующее описание. ' +
             f"{request_data_dict.get('sale_channel_info')}"
         )
 
@@ -244,6 +247,8 @@ def raw_multiple_creation_request_data(
                 request_data_dict.get('client_data', ''): answer
             }
         )
+
+    return llm_model_answers
 
 
 def send_request_for_get_marketing_text(

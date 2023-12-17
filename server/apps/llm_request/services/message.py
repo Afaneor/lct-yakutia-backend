@@ -1,7 +1,9 @@
 from typing import Any, Dict
 
 from server.apps.llm_request.models import Message, RequestData
-from server.apps.llm_request.tasks import celery_send_request_for_get_marketing_text
+from server.apps.llm_request.tasks import (
+    celery_send_request_for_get_marketing_text,
+)
 from server.apps.services.enums import MessageType
 from server.apps.user.models import User
 

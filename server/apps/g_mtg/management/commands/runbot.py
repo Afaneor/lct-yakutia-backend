@@ -2,33 +2,16 @@ import asyncio
 import logging
 
 from aiogram import Bot, Dispatcher
-from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from aiogram.utils import executor
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
-from server.apps.bot.handlers import (
-    event,
-    general,
-    participant,
-    participant_profile,
-    participants_event, admin_event, participants_workout
-)
+from server.apps.telegram_bot import general
 
-
-async def on_startup():
-    """Запуск бота."""
-    logging.basicConfig(level=logging.INFO)
-    bot = Bot(token=settings.TELEGRAM_BOT_TOKEN)
-    dp = Dispatcher(storage=MemoryStorage())
-
-    dp.include_router(admin_event.router)
-    dp.include_router(general.router)
-    dp.include_router(event.router)
-    dp.include_router(participant.router)
-    dp.include_router(participant_profile.router)
-    dp.include_router(participants_event.router)
-    dp.include_router(participants_workout.router)
-    await dp.start_polling(bot)
+bot = Bot(token=settings.TELEGRAM_BOT_TOKEN)
+dp = Dispatcher(bot, storage=MemoryStorage())
+general.register_handlers_other(dp)
 
 
 class Command(BaseCommand):
@@ -37,5 +20,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         """Запуск бота."""
-        asyncio.run(on_startup(), debug=True)
 
+        executor.start_polling(dp, skip_updates=True)

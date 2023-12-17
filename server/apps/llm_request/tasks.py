@@ -3,10 +3,13 @@ from django.conf import settings
 from rest_framework import status
 
 from server.apps.llm_request.models import Message, RequestData
-from server.apps.llm_request.services.exception import SendException, \
-    ApiException
-from server.apps.llm_request.services.formation_request import \
-    get_request_for_get_marketing_text
+from server.apps.llm_request.services.exception import (
+    ApiException,
+    SendException,
+)
+from server.apps.llm_request.services.formation_request import (
+    get_request_for_get_marketing_text,
+)
 from server.apps.services.enums import MessageType, RequestStatus
 from server.celery import app
 
