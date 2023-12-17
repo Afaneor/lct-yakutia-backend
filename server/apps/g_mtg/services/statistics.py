@@ -46,7 +46,7 @@ def get_statistics(
                         'value': RequestData.objects.filter(
                             project_sale_channel__project__in=projects_id,
                         ).values(
-                            product=F('project_sale_channel__project__product'),
+                            product=F('project_sale_channel__project__product__name'),
                         ).annotate(count=Count('id')).order_by('-count'),
                     },
                     {
@@ -56,7 +56,7 @@ def get_statistics(
                             project_sale_channel__project__in=projects_id,
                             success_type__in={SuccessType.SOLD, SuccessType.INTEREST},
                         ).values(
-                            'project_sale_channel__project__product'
+                            product=F('project_sale_channel__project__product__name'),
                         ).annotate(count=Count('id')).order_by('-count'),
                     },
                 ],
@@ -70,7 +70,7 @@ def get_statistics(
                         'value': ProjectSaleChannel.objects.filter(
                             project__in=projects_id,
                         ).values(
-                            'sale_channel'
+                            sale_channel=F('sale_channel__name'),
                         ).annotate(count=Count('id')).order_by('-count'),
                     },
                     {
@@ -79,7 +79,7 @@ def get_statistics(
                         'value': RequestData.objects.filter(
                             project_sale_channel__project__in=projects_id,
                         ).values(
-                            'project_sale_channel__sale_channel',
+                            sale_channel=F('project_sale_channel__sale_channel_name'),
                         ).annotate(count=Count('id')).order_by('-count'),
                     },
                 ],
@@ -130,7 +130,7 @@ def get_statistics(
                     'value': RequestData.objects.filter(
                         project_sale_channel__project__in=projects_id,
                     ).values(
-                        product=F('project_sale_channel__project__product'),
+                        product=F('project_sale_channel__project__product__name'),
                     ).annotate(count=Count('id')).order_by('-count'),
                 },
                 {
@@ -140,7 +140,7 @@ def get_statistics(
                         project_sale_channel__project__in=projects_id,
                         success_type__in={SuccessType.SOLD, SuccessType.INTEREST},
                     ).values(
-                        'project_sale_channel__project__product'
+                        product=F('project_sale_channel__project__product__name'),
                     ).annotate(count=Count('id')).order_by('-count'),
                 },
             ],
@@ -154,7 +154,7 @@ def get_statistics(
                     'value': ProjectSaleChannel.objects.filter(
                         project__in=projects_id,
                     ).values(
-                        'sale_channel'
+                        sale_channel=F('sale_channel__name'),
                     ).annotate(count=Count('id')).order_by('-count'),
                 },
                 {
@@ -163,7 +163,7 @@ def get_statistics(
                     'value': RequestData.objects.filter(
                         project_sale_channel__project__in=projects_id,
                     ).values(
-                        'project_sale_channel__sale_channel',
+                        sale_channel=F('project_sale_channel__sale_channel__name'),
                     ).annotate(count=Count('id')).order_by('-count'),
                 },
             ],
