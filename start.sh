@@ -16,4 +16,6 @@ if [ ! -f models/model-q5_K.gguf ]; then
     curl https://huggingface.co/IlyaGusev/saiga2_13b_gguf/resolve/main/model-q5_K.gguf --output models/model-q5_K.gguf
 fi
 
+cp config/.env.template config/.env
+
 docker compose up -d

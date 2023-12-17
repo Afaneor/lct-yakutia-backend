@@ -86,14 +86,18 @@ services:
       MODEL: "/model/model-q5_K.gguf"
     volumes:
       - ./model:/model
-#    ports:
-#      - "9001:8000"
+    ports:
+      - "9001:8000"
+
+  argilla:
+    image: argilla/argilla-quickstart:latest
+    networks:
+      - webnet
 
 
-# This task is an example of how to extend existing ones:
-#   some_worker:
-#     <<: *web
-#     command: python manage.py worker_process
+  telegram_bot:
+    <<: *web
+    command: python manage.py worker_process
 
 networks:
   # Network for your internals, use it by default:
