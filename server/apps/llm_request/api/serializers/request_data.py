@@ -56,7 +56,7 @@ class RequestDataSerializer(ModelSerializerWithPermission):
             return 'Женский'
         return None
 
-    def get_cclient_data_super_clust(self, request_data: RequestData):
+    def get_client_data_super_clust(self, request_data: RequestData):
         """Возврат супер кластера клиента."""
         client_data_super_clust = request_data.client_data['super_clust']
         return client_data_super_clust if client_data_super_clust != 'NULL' else None

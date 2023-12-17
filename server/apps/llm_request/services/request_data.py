@@ -41,7 +41,6 @@ def create_request_data_with_data_from_xlsx_file(
         [
             RequestData(
                 project_sale_channel=project_sale_channel,
-
                 source_client_info=source_client_info,
                 client_data=client_data,
                 client_data_decoding=client_data_decoding,
