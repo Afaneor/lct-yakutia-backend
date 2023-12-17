@@ -41,7 +41,7 @@ def create_request_data_with_data_from_xlsx_file(
         [
             RequestData(
                 project_sale_channel=project_sale_channel,
-                user=user,
+
                 source_client_info=source_client_info,
                 client_data=client_data,
                 client_data_decoding=client_data_decoding,
@@ -69,7 +69,6 @@ def create_request_data_with_data_from_postgres(
         [
             RequestData(
                 project_sale_channel=project_sale_channel,
-                user=user,
                 client_id=client_data.pop('id'),
                 source_client_info=source_client_info,
                 client_data=client_data,
@@ -93,7 +92,6 @@ def create_request_data_with_data_from_mongo(
         [
             RequestData(
                 project_sale_channel=project_sale_channel,
-                user=user,
                 client_id=client_data.pop('_id'),
                 source_client_info=source_client_info,
                 client_data=client_data,
