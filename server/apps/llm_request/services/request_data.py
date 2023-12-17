@@ -1,8 +1,6 @@
 from time import sleep
 from typing import Any, Dict, List
 
-import requests
-from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
@@ -11,6 +9,8 @@ from server.apps.g_mtg.models import ProjectSaleChannel, Project
 from server.apps.llm_request.models import Message
 from server.apps.llm_request.models.request_data import RequestData
 from server.apps.llm_request.services.exception import ApiException
+from server.apps.llm_request.services.formation_request import \
+    get_request_for_get_marketing_text
 from server.apps.llm_request.tasks import celery_send_request_for_get_marketing_text
 from server.apps.services.enums import MessageType
 from server.apps.user.models import User
@@ -241,30 +241,6 @@ def raw_multiple_creation_request_data(
             }
         )
 
-
-def get_request_for_get_marketing_text(
-    prompt: str
-):
-    return requests.post(
-        url=f'{settings.LLM_MODEL_URL_FOR_GENERATE_MARKETING_TEXT}',
-        json={
-            'messages': [
-                {
-                    'content': settings.LLM_MODEL_SYSTEM_CONTENT_FOR_GENERATE_MARKETING_TEXT,
-                    'role': 'system',
-                },
-                {
-                    'content': (
-                        settings.LLM_MODEL_USER_CONTENT_FOR_GENERATE_MARKETING_TEXT +
-                        ' ' +
-                        prompt,
-                    ),
-                    'role': 'user',
-                }
-            ],
-        },
-        timeout=60,
-    )
 
 def send_request_for_get_marketing_text(
     prompt: str,

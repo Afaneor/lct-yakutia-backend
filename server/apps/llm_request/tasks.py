@@ -5,7 +5,7 @@ from rest_framework import status
 from server.apps.llm_request.models import Message
 from server.apps.llm_request.services.exception import SendException, \
     ApiException
-from server.apps.llm_request.services.request_data import \
+from server.apps.llm_request.services.formation_request import \
     get_request_for_get_marketing_text
 from server.apps.services.enums import MessageType
 from server.celery import app

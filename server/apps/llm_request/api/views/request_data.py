@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from server.apps.llm_request.api.serializers import RequestDataSerializer
 from server.apps.llm_request.api.serializers.request_data import (
     CreateRequestDataSerializer, MultipleCreationRawRequestDataSerializer,
+    MultipleCreationRequestDataSerializer,
 )
 
 from django.utils.translation import gettext_lazy as _
