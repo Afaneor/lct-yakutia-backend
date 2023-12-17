@@ -17,9 +17,6 @@ class RequestDataSerializer(ModelSerializerWithPermission):
 
     messages = BaseMessageSerializer(many=True)
     actual_message = serializers.SerializerMethodField()
-    client_data_age = serializers.SerializerMethodField()
-    client_data_gender = serializers.SerializerMethodField()
-    client_data_super_clust = serializers.SerializerMethodField()
 
     class Meta(object):
         model = RequestData
@@ -29,9 +26,6 @@ class RequestDataSerializer(ModelSerializerWithPermission):
             'client_id',
             'source_client_info',
             'client_data',
-            'client_data_age',
-            'client_data_gender',
-            'client_data_super_clust',
             'client_data_decoding',
             'status',
             'success_type',
@@ -41,25 +35,6 @@ class RequestDataSerializer(ModelSerializerWithPermission):
             'updated_at',
             'permission_rules',
         )
-
-    def get_client_data_age(self, request_data: RequestData):
-        """Возврат возраста клиента."""
-        client_data_age = request_data.client_data['age']
-        return '{:.3f}'.format(client_data_age) if client_data_age != 'NULL' else None
-
-    def get_client_data_gender(self, request_data: RequestData):
-        """Возврат пола клиента."""
-        client_data_gender = request_data.client_data['gender']
-        if client_data_gender == 0:
-            return 'Мужской'
-        elif client_data_gender == 1:
-            return 'Женский'
-        return None
-
-    def get_client_data_super_clust(self, request_data: RequestData):
-        """Возврат супер кластера клиента."""
-        client_data_super_clust = request_data.client_data['super_clust']
-        return client_data_super_clust if client_data_super_clust != 'NULL' else None
 
     def get_actual_message(self, request_data: RequestData):
         """Возврат последнего сообщения от llm_model."""

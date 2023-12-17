@@ -15,6 +15,7 @@ class RequestData(AbstractBaseModel):
         verbose_name=_('Канал связи проекта'),
         related_name='users_requests',
         null=True,
+        db_index=True,
     )
     client_id = models.CharField(
         verbose_name=_('ID клиента из сторонних ресурсов'),

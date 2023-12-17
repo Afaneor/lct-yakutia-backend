@@ -18,7 +18,6 @@ class Message(AbstractBaseModel):
         on_delete=models.CASCADE,
         verbose_name=_('Данные для запроса'),
         related_name='messages',
-        db_index=True,
     )
     parent = models.ForeignKey(
         to='self',
@@ -33,7 +32,6 @@ class Message(AbstractBaseModel):
         on_delete=models.CASCADE,
         verbose_name=_('Пользователь'),
         related_name='messages',
-        db_index=True,
     )
     text = models.TextField(
         verbose_name=_('Сообщение'),

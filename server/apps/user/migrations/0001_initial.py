@@ -8,6 +8,17 @@ from django.db import migrations, models
 import server.apps.user.models.user
 
 
+def add_user(apps, schema_editor):  # noqa: C901
+    """Добавление супердамина."""
+    User = apps.get_model("user", "User")  # noqa: N806
+
+    User.objects.create_superuser(
+        username='admin',
+        email='admin@ya.ru',
+        password='1234',
+    )
+
+
 class Migration(migrations.Migration):
 
     initial = True
@@ -165,4 +176,9 @@ class Migration(migrations.Migration):
                 ('objects', server.apps.user.models.user.DefaultUserManager()),
             ],
         ),
+        migrations.RunPython(
+            add_user,
+            migrations.RunPython.noop,
+        ),
     ]
+

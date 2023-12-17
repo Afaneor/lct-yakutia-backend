@@ -33,7 +33,11 @@ class MessageViewSet(RetrieveListCreateUpdateViewSet):
     serializer_class = MessageSerializer
     create_serializer_class = CreateMessageSerializer
     update_serializer_class = UpdateMessageSerializer
-    queryset = Message.objects.select_related('request_data')
+    queryset = Message.objects.select_related(
+        'request_datat',
+        'parent',
+        'user',
+    )
     ordering_fields = '__all__'
     search_fields = (
         'text',

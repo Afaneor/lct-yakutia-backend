@@ -25,6 +25,8 @@ class MessageSerializer(ModelSerializerWithPermission):
         fields = (
             'id',
             'request_data',
+            'parent',
+            'user',
             'text',
             'message_type',
             'status',
@@ -34,7 +36,7 @@ class MessageSerializer(ModelSerializerWithPermission):
         )
 
 
-class CreateMessageSerializer(ModelSerializerWithPermission):
+class CreateMessageSerializer(serializers.ModelSerializer):
     """Создать сообщение."""
 
     class Meta(object):
@@ -47,7 +49,7 @@ class CreateMessageSerializer(ModelSerializerWithPermission):
         )
 
 
-class UpdateMessageSerializer(ModelSerializerWithPermission):
+class UpdateMessageSerializer(serializers.ModelSerializer):
     """Изменить сообщение."""
 
     class Meta(object):
