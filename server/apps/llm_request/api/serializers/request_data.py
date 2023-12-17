@@ -110,18 +110,6 @@ class CreateRequestDataSerializer(serializers.Serializer):
     client_data = serializers.JSONField()
     client_data_decoding = serializers.JSONField()
 
-    class Meta(object):
-        fields = (
-            'id',
-            'project',
-            'sale_channel',
-            'prompt',
-            'client_id',
-            'source_client_info',
-            'client_data',
-            'client_data_decoding',
-        )
-
     def validate(self, attrs):
         """Валидация запроса."""
         validate_client_data_decoding(
@@ -154,20 +142,11 @@ class RequestDataForMultipleCreateSerializer(serializers.Serializer):
         allow_null=True,
         allow_blank=True,
     )
+    source_client_info = serializers.CharField(
+        default='api',
+    )
     client_data = serializers.JSONField()
     client_data_decoding = serializers.JSONField()
-
-    class Meta(object):
-        fields = (
-            'id',
-            'product',
-            'sale_channel',
-            'prompt',
-            'client_id',
-            'source_client_info',
-            'client_data',
-            'client_data_decoding',
-        )
 
     def validate(self, attrs):
         """Валидация запроса."""
@@ -203,17 +182,6 @@ class RawRequestDataForMultipleCreateSerializer(serializers.Serializer):
     )
     client_data = serializers.JSONField()
     client_data_decoding = serializers.JSONField()
-
-    class Meta(object):
-        fields = (
-            'id',
-            'product_info',
-            'sale_channel_info',
-            'client_id',
-            'source_client_info',
-            'client_data',
-            'client_data_decoding',
-        )
 
     def validate(self, attrs):
         """Валидация запроса."""

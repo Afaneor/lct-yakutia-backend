@@ -45,13 +45,6 @@ class MultipleCreateProjectSaleChannelSerializer(serializers.Serializer):
         many=True,
     )
 
-    class Meta(object):
-        fields = (
-            'id',
-            'project',
-            'sales_channels',
-        )
-
 
 class UpdateProjectSaleChannelSerializer(serializers.ModelSerializer):
     """Изменение канала продаж для проекта."""

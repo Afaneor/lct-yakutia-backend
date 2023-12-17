@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from server.apps.llm_request.models import Message
+from server.apps.llm_request.models import Message, RequestData
 from server.apps.services.serializers import ModelSerializerWithPermission
 
 
@@ -55,11 +55,10 @@ class CreateMessageSerializer(serializers.ModelSerializer):
 class MultipleCreationMessagesSerializer(serializers.Serializer):
     """Создать сообщения."""
 
-    class Meta(object):
-        fields = (
-            'id',
-            'requests_data',
-        )
+    requests_data = serializers.PrimaryKeyRelatedField(
+        queryset=RequestData.objects.all(),
+        many=True,
+    )
 
 
 class UpdateMessageSerializer(serializers.ModelSerializer):

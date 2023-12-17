@@ -49,19 +49,19 @@ def create_message(
         message_type=MessageType.USER,
     )
 
-    # celery_send_request_for_get_marketing_text.apply_async(
-    #     kwargs={
-    #         'prompt': text,
-    #         'request_data_id': request_data.id,
-    #         'message_id': message.id,
-    #     }
-    # )
-
-    celery_send_request_for_get_marketing_text(
-        prompt=text,
-        request_data_id=request_data.id,
-        message_id=message.id,
+    celery_send_request_for_get_marketing_text.apply_async(
+        kwargs={
+            'prompt': text,
+            'request_data_id': request_data.id,
+            'message_id': message.id,
+        }
     )
+
+    # celery_send_request_for_get_marketing_text(
+    #     prompt=text,
+    #     request_data_id=request_data.id,
+    #     message_id=message.id,
+    # )
 
     return message
 
@@ -84,18 +84,18 @@ def multiple_creation_request_data(
             text=text,
             message_type=MessageType.USER,
         )
-        #
-        # celery_send_request_for_get_marketing_text.apply_async(
-        #     kwargs={
-        #         'prompt': text,
-        #         'request_data_id': request_data.id,
-        #         'message_id': message.id,
-        #     }
-        # )
 
-        celery_send_request_for_get_marketing_text(
-            prompt=text,
-            request_data_id=request_data.id,
-            message_id=message.id,
+        celery_send_request_for_get_marketing_text.apply_async(
+            kwargs={
+                'prompt': text,
+                'request_data_id': request_data.id,
+                'message_id': message.id,
+            }
         )
+
+        # celery_send_request_for_get_marketing_text(
+        #     prompt=text,
+        #     request_data_id=request_data.id,
+        #     message_id=message.id,
+        # )
 
