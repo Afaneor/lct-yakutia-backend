@@ -18,4 +18,6 @@ fi
 
 cp config/.env.template config/.env
 
+
+cp config/.env.template config/.env
 docker compose up -d

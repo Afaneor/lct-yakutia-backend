@@ -94,10 +94,9 @@ services:
     networks:
       - webnet
 
-
   telegram_bot:
     <<: *web
-    command: python manage.py worker_process
+    command: python manage.py runbot
 
 networks:
   # Network for your internals, use it by default:
