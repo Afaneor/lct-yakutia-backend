@@ -1,4 +1,5 @@
 import django_filters
+from django.utils.translation import gettext_lazy as _
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.request import Request
@@ -7,15 +8,15 @@ from rest_framework.response import Response
 from server.apps.llm_request.api.serializers import (
     CreateMessageSerializer,
     MessageSerializer,
-    UpdateMessageSerializer, MultipleCreationMessagesSerializer,
+    MultipleCreationMessagesSerializer,
+    UpdateMessageSerializer,
 )
 from server.apps.llm_request.models import Message
-from django.utils.translation import gettext_lazy as _
-from server.apps.llm_request.services.message import create_message, \
-    multiple_creation_request_data
-from server.apps.services.views import (
-    RetrieveListCreateUpdateViewSet,
+from server.apps.llm_request.services.message import (
+    create_message,
+    multiple_creation_request_data,
 )
+from server.apps.services.views import RetrieveListCreateUpdateViewSet
 
 
 class MessageFilter(django_filters.FilterSet):

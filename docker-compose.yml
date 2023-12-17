@@ -13,7 +13,7 @@ services:
     image: "postgres:15-alpine"
     restart: unless-stopped
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql/data
     networks:
       - webnet
     env_file: ./config/.env
@@ -100,6 +100,20 @@ services:
   telegram_bot:
     <<: *web
     command: python manage.py runbot
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: unless-stopped
+    networks:
+      - webnet
+
+  celery:
+    <<: *web
+    command: celery -A server worker -l info --concurrency=4
+    depends_on:
+      - rabbitmq
+    networks:
+      - webnet
 
 networks:
   # Network for your internals, use it by default:

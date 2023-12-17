@@ -15,15 +15,16 @@ def ger_correct_client_data(
     correct_client_data = ''
     client_data_decoding = request_data.client_data_decoding
     for index, client_data in enumerate(request_data.client_data.items()):
+        if client_data[1] in {'NULL', '', None, 0}:
+            continue
         correct_client_data += (
             f'{index}) {client_data_decoding.get(client_data[0])} - ' +
             f'{client_data[1]}\n'
         )
 
     return (
-        'Клиент для которого необходимо сформировать маркетинговое '
-        'предложение имеет следующие характеристики: ' +
-        f'"{correct_client_data}"'
+        'Характеристики клиента: ' +
+        f'{correct_client_data}'
     )
 
 

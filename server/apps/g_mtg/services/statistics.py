@@ -12,7 +12,7 @@ def get_statistics(
 ) -> Dict[str, Any]:
     """Формирование статистики по проекту."""
     if not projects_id:
-        projects_id = Project.objects.values_lust('id', flat=True)
+        projects_id = Project.objects.values_list('id', flat=True)
 
     if len(projects_id) > 1:
 

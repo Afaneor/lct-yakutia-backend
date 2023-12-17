@@ -226,7 +226,7 @@ class RawRequestDataForMultipleCreateSerializer(serializers.Serializer):
 class MultipleCreationRawRequestDataSerializer(serializers.Serializer):
     """Создание списка данных для запросов."""
 
-    raw_requests_data = RequestDataForMultipleCreateSerializer(many=True)
+    raw_requests_data = RawRequestDataForMultipleCreateSerializer(many=True)
 
 
 class UpdateRequestDataSerializer(ModelSerializerWithPermission):
