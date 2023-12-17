@@ -24,5 +24,5 @@ def get_request_for_get_marketing_text(
                 },
             ],
         },
-        timeout=60,
+        timeout=180,
     )
