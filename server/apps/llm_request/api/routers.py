@@ -18,7 +18,7 @@ router.APIRootView = GMtgAPIRootView
 
 router.register('messages', MessageViewSet, 'messages')
 router.register(
-    'marketing-texts-requests',
+    'requests-data',
     RequestDataViewSet,
-    'marketing-texts-requests',
+    'requests-data',
 )
