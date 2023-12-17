@@ -11,6 +11,7 @@ from server.apps.llm_request.models.request_data import RequestData
 from server.apps.llm_request.services.exception import ApiException
 from server.apps.llm_request.services.formation_request import \
     get_request_for_get_marketing_text
+from server.apps.llm_request.services.message import ger_correct_client_data
 from server.apps.llm_request.tasks import celery_send_request_for_get_marketing_text
 from server.apps.services.enums import MessageType
 from server.apps.user.models import User
@@ -131,6 +132,8 @@ def create_request_data(
         },
     )
 
+    prompt += ger_correct_client_data(request_data=request_data)
+
     message = Message.objects.create(
         request_data=request_data,
         user=user,
@@ -179,6 +182,8 @@ def multiple_creation_request_data(
             },
         )
 
+        prompt += ger_correct_client_data(request_data=request_data)
+
         message = Message.objects.create(
             request_data=request_data,
             user=user,
@@ -222,6 +227,8 @@ def raw_multiple_creation_request_data(
             'банковского продукта имеет следующее описание. '
             f"{request_data_dict.get('sale_channel_info')}"
         )
+
+        prompt += ger_correct_client_data(request_data=request_data)
 
         message = Message.objects.create(
             request_data=request_data,
