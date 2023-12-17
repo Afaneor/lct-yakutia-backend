@@ -5,20 +5,18 @@ from django.utils.translation import gettext_lazy as _
 
 from server.apps.services.base_model import AbstractBaseModel
 from server.apps.services.enums import (
-    ClientType,
     MessageStatus,
     MessageType,
-    RequestStatus,
 )
 
 
 class Message(AbstractBaseModel):
     """Сообщение."""
 
-    marketing_text_request = models.ForeignKey(
-        to='llm_request.MarketingTextRequest',
+    request_data = models.ForeignKey(
+        to='llm_request.RequestData',
         on_delete=models.CASCADE,
-        verbose_name=_('Запрос пользователя'),
+        verbose_name=_('Данные для запроса'),
         related_name='messages',
         db_index=True,
     )
@@ -67,4 +65,4 @@ class Message(AbstractBaseModel):
         ]
 
     def __str__(self):
-        return f'{self.marketing_text_request}'
+        return f'{self.request_data}'

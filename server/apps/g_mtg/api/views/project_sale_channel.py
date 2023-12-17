@@ -19,12 +19,14 @@ from server.apps.g_mtg.api.serializers import (
     UploadDataFromPostgresSerializer,
 )
 from server.apps.g_mtg.models import ProjectSaleChannel
-from server.apps.g_mtg.services.crud.project import create_project_sale_channel
-from server.apps.llm_request.services.user_reques import (
-    create_marketing_text_request_with_data_from_xlsx_file,
+from server.apps.g_mtg.services.crud.project_sale_channel import (
+    create_project_sale_channel,
+)
+from server.apps.llm_request.services.request_data import (
+    create_request_data_with_data_from_mongo,
+    create_request_data_with_data_from_postgres,
+    create_request_data_with_data_from_xlsx_file,
     validate_client_data_decoding,
-    create_marketing_text_request_with_data_from_postgres,
-    create_marketing_text_request_with_data_from_mongo,
 )
 from server.apps.services.views import RetrieveListUpdateViewSet
 
@@ -99,7 +101,7 @@ class ProjectSaleChannelViewSet(RetrieveListUpdateViewSet):
             client_data_keys=client_data_keys,
         )
 
-        create_marketing_text_request_with_data_from_xlsx_file(
+        create_request_data_with_data_from_xlsx_file(
             project_sale_channel=self.get_object(),
             user=self.request.user,
             source_client_info=request.FILES['file'].name,
@@ -132,7 +134,7 @@ class ProjectSaleChannelViewSet(RetrieveListUpdateViewSet):
         pg_cursor = connection.cursor()
         pg_cursor.execute(validated_data['db_request'])
 
-        create_marketing_text_request_with_data_from_postgres(
+        create_request_data_with_data_from_postgres(
             project_sale_channel=self.get_object(),
             user=self.request.user,
             source_client_info=f"POSTGRES. DB_NAME: {validated_data['db_name']}",
@@ -172,7 +174,7 @@ class ProjectSaleChannelViewSet(RetrieveListUpdateViewSet):
             client_data_keys=list(all_client_data.keys()),
         )
 
-        create_marketing_text_request_with_data_from_mongo(
+        create_request_data_with_data_from_mongo(
             project_sale_channel=self.get_object(),
             user=self.request.user,
             source_client_info=f"MONGO. DB_NAME: {validated_data['db_name']}",

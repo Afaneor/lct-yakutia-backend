@@ -1,14 +1,18 @@
-from server.apps.llm_request.api.serializers.marketing_text_request import (
-    MarketingTextRequestSerializer,
-)
 from server.apps.llm_request.api.serializers.message import (
     BaseMessageSerializer,
+    CreateMessageSerializer,
     MessageSerializer,
+    UpdateMessageSerializer,
+)
+from server.apps.llm_request.api.serializers.request_data import (
+    RequestDataSerializer,
 )
 
 __all__ = [
     'BaseMessageSerializer',
+    'CreateMessageSerializer',
     'MessageSerializer',
+    'UpdateMessageSerializer',
 
-    'MarketingTextRequestSerializer',
+    'RequestDataSerializer',
 ]

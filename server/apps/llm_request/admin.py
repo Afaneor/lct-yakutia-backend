@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from server.apps.llm_request.models import MarketingTextRequest, Message
+from server.apps.llm_request.models import Message, RequestData
 
 
 @admin.register(Message)
@@ -9,7 +9,7 @@ class MessageAdmin(admin.ModelAdmin[Message]):
 
     list_display = (
         'id',
-        'marketing_text_request',
+        'request_data',
         'message_type',
         'status',
     )
@@ -18,30 +18,29 @@ class MessageAdmin(admin.ModelAdmin[Message]):
         'status',
     )
     search_fields = (
-        'user_request__user__email',
-        'user_request__user__username',
-        'user_request__user__first_name',
-        'user_request__user__last_name',
+        'request_data__user__email',
+        'request_data__user__username',
+        'request_data__user__first_name',
+        'request_data__user__last_name',
     )
     ordering = (
         'id',
-        'marketing_text_request',
+        'request_data',
         'message_type',
         'status',
     )
     raw_id_fields = (
-        'marketing_text_request',
+        'request_data',
     )
 
 
-@admin.register(MarketingTextRequest)
-class MarketingTextRequestAdmin(admin.ModelAdmin[MarketingTextRequest]):
-    """Запрос пользователя."""
+@admin.register(RequestData)
+class RequestDataAdmin(admin.ModelAdmin[RequestData]):
+    """Данные для запроса."""
 
     list_display = (
         'id',
         'project_sale_channel',
-        'user',
         'client_id',
         'source_client_info',
         'status',
@@ -52,15 +51,12 @@ class MarketingTextRequestAdmin(admin.ModelAdmin[MarketingTextRequest]):
         'status',
     )
     search_fields = (
-        'user__email',
-        'user__username',
-        'user__first_name',
-        'user__last_name',
+        'project_sale_channel__project__name',
+        'project_sale_channel__sale_channel__name',
     )
     ordering = (
         'id',
         'project_sale_channel',
-        'user',
         'client_id',
         'source_client_info',
         'status',
@@ -68,5 +64,4 @@ class MarketingTextRequestAdmin(admin.ModelAdmin[MarketingTextRequest]):
     )
     raw_id_fields = (
         'project_sale_channel',
-        'user',
     )

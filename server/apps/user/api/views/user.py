@@ -93,7 +93,7 @@ class UserViewSet(RetrieveListUpdateViewSet):
         return queryset.filter(pk=user.pk)
 
     @action(
-        ['POST'],
+        methods=['POST'],
         url_path='login',
         detail=False,
         serializer_class=LoginSerializer,
@@ -107,7 +107,7 @@ class UserViewSet(RetrieveListUpdateViewSet):
         Доступно: любому пользователю.
         """
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)  # noqa: WPS204
+        serializer.is_valid(raise_exception=True)
         try:
             login(
                 request,
@@ -121,7 +121,7 @@ class UserViewSet(RetrieveListUpdateViewSet):
         return Response(status=status.HTTP_200_OK)
 
     @action(
-        ['POST'],
+        methods=['POST'],
         detail=False,
         url_path='register',
         serializer_class=RegisterSerializer,
@@ -316,7 +316,7 @@ class UserViewSet(RetrieveListUpdateViewSet):
         )
 
     @action(
-        ['POST'],
+        methods=['POST'],
         detail=False,
         url_path='logout',
     )

@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import QuerySet
 
 from server.apps.g_mtg.models import ProjectUser
-from server.apps.llm_request.models import MarketingTextRequest
+from server.apps.llm_request.models import RequestData
 from server.apps.services.enums import SuccessType, UserRoleInProject
 
 
@@ -13,19 +13,19 @@ def get_project_user_statistics(
 ) -> Dict[str, Any]:
     """Получение общей статистики по проекту.
 
-    1) user_request_count - количество запросов по каждому пользователю.
-    2) user_request_sold - количество проданных продуктов по каждому
+    1) request_data_count - количество запросов по каждому пользователю.
+    2) request_data_sold - количество проданных продуктов по каждому
     пользователю.
     """
-    marketing_text_request = MarketingTextRequest.objects.filter(
+    request_data = RequestData.objects.filter(
         user__in=queryset.values('user')
     )
 
     return {
-        'user_request_count': marketing_text_request.values(
+        'request_data_count': request_data.values(
             'user'
         ).annotate(count=models.Count('id')).order_by('-count'),
-        'user_request_sold': marketing_text_request.filter(
+        'request_data_sold': request_data.filter(
             success_type=SuccessType.SOLD,
         ).values(
             'user'

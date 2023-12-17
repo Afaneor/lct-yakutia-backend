@@ -24,11 +24,35 @@ class MessageSerializer(ModelSerializerWithPermission):
         model = Message
         fields = (
             'id',
-            'marketing_text_request',
+            'request_data',
             'text',
             'message_type',
             'status',
             'created_at',
             'updated_at',
             'permission_rules',
+        )
+
+
+class CreateMessageSerializer(ModelSerializerWithPermission):
+    """Создать сообщение."""
+
+    class Meta(object):
+        model = Message
+        fields = (
+            'id',
+            'request_data',
+            'parent',
+            'text',
+        )
+
+
+class UpdateMessageSerializer(ModelSerializerWithPermission):
+    """Изменить сообщение."""
+
+    class Meta(object):
+        model = Message
+        fields = (
+            'id',
+            'status',
         )

@@ -1,17 +1,11 @@
 import django_filters
-from rest_framework import status
-from rest_framework.decorators import action
-from rest_framework.response import Response
 
 from server.apps.g_mtg.api.serializers.project_user import (
     CreateProjectUserSerializer,
     ProjectUserSerializer,
 )
 from server.apps.g_mtg.models import ProjectUser
-from server.apps.g_mtg.services.crud.project_user import (
-    create_project_user,
-    get_project_user_statistics,
-)
+from server.apps.g_mtg.services.crud.project_user import create_project_user
 from server.apps.services.filters_mixins import CreatedUpdatedDateFilterMixin
 from server.apps.services.views import RetrieveListCreateDeleteViewSet
 
@@ -65,20 +59,3 @@ class ProjectUserViewSet(RetrieveListCreateDeleteViewSet):
         serializer.instance = create_project_user(
             validated_data=serializer.validated_data,
         )
-
-    @action(
-        methods=['GET'],
-        url_path='statistics',
-        detail=False,
-    )
-    def statistics(self, request):
-        """Статистика по пользователям в проекте."""
-        statistics_data = get_project_user_statistics(
-            queryset=self.filter_queryset(self.get_queryset()),
-        )
-
-        return Response(
-            data=statistics_data,
-            status=status.HTTP_201_CREATED,
-        )
-

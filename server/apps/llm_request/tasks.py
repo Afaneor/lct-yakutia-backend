@@ -3,52 +3,31 @@ from django.conf import settings
 from rest_framework import status
 
 from server.apps.llm_request.models import Message
+from server.apps.llm_request.services.exception import SendException, \
+    ApiException
+from server.apps.llm_request.services.request_data import \
+    get_request_for_get_marketing_text
 from server.apps.services.enums import MessageType
 from server.celery import app
 
 
-class SendException(Exception):  # noqa: N818
-    """Сервис с llm_model не доступен."""
-
-
-class ApiException(Exception):  # noqa: N818
-    """Некорректная отправка данных в llm_model."""
-
-
 @app.task(bind=True)
-def send_request_for_get_marketing_text(
+def celery_send_request_for_get_marketing_text(
     self,
     prompt: str,
-    user_request_id: int,
+    request_data_id: int,
+    message_id: int,
 ):
-    """Отправить запрос в llm_model"""
-    response = requests.post(
-        url=f'{settings.LLM_MODEL_URL_FOR_GENERATE_MARKETING_TEXT}',
-        json={
-            'messages': [
-                {
-                    'content': settings.LLM_MODEL_SYSTEM_CONTENT_FOR_GENERATE_MARKETING_TEXT,
-                    'role': 'system',
-                },
-                {
-                    'content': (
-                        settings.LLM_MODEL_USER_CONTENT_FOR_GENERATE_MARKETING_TEXT +
-                        ' ' +
-                        prompt,
-                    ),
-                    'role': 'user',
-                }
-            ],
-        },
-        timeout=60,
-    )
+    """Отправить запрос в llm_model через celery."""
+    response = get_request_for_get_marketing_text(prompt=prompt)
 
     try:
         if response.status_code == status.HTTP_200_OK:
             answer = response.json()['choices'][0]['message']['content']
 
             Message.objects.create(
-                user_request_id=user_request_id,
+                request_data_id=request_data_id,
+                parent_id=message_id,
                 text=answer,
                 message_type=MessageType.SYSTEM,
             )
@@ -81,7 +60,7 @@ def send_request_for_get_marketing_text(
 def send_request_for_get_channel_advice(
     self,
     prompt: str,
-    user_request_id: int,
+    request_data_id: int,
 ):
     """Отправить запрос в llm_model"""
     response = requests.post(
@@ -110,7 +89,7 @@ def send_request_for_get_channel_advice(
             answer = response.json()['choices'][0]['message']['content']
 
             Message.objects.create(
-                user_request_id=user_request_id,
+                request_data_id=request_data_id,
                 text=answer,
                 message_type=MessageType.SYSTEM,
             )
