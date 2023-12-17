@@ -24,7 +24,7 @@ class ProjectSaleChannel(AbstractBaseModel):
     )
     prompt = models.CharField(
         verbose_name=_('Подсказка для генерации продукта'),
-        max_length=settings.MAX_STRING_LENGTH,
+        max_length=1000,
         blank=True,
     )
 
