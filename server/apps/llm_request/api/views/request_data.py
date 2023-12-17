@@ -7,14 +7,14 @@ from rest_framework.response import Response
 from server.apps.llm_request.api.serializers import RequestDataSerializer
 from server.apps.llm_request.api.serializers.request_data import (
     CreateRequestDataSerializer, MultipleCreationRawRequestDataSerializer,
-    MultipleCreationRequestDataSerializer,
+    MultipleCreationRequestDataSerializer, UpdateRequestDataSerializer,
 )
 
 from django.utils.translation import gettext_lazy as _
 from server.apps.llm_request.models import RequestData
 from server.apps.llm_request.services.request_data import create_request_data, \
     multiple_creation_request_data, raw_multiple_creation_request_data
-from server.apps.services.views import RetrieveListCreateViewSet
+from server.apps.services.views import RetrieveListCreateUpdateViewSet
 
 
 class RequestDataFilter(django_filters.FilterSet):
@@ -32,11 +32,12 @@ class RequestDataFilter(django_filters.FilterSet):
         )
 
 
-class RequestDataViewSet(RetrieveListCreateViewSet):
+class RequestDataViewSet(RetrieveListCreateUpdateViewSet):
     """Данные для запроса."""
 
     serializer_class = RequestDataSerializer
     create_serializer_class = CreateRequestDataSerializer
+    update_serializer_class = UpdateRequestDataSerializer
     queryset = RequestData.objects.select_related(
         'project_sale_channel',
     ).prefetch_related(
@@ -49,7 +50,7 @@ class RequestDataViewSet(RetrieveListCreateViewSet):
     )
     filterset_class = RequestDataFilter
     permission_type_map = {
-        **RetrieveListCreateViewSet.permission_type_map,
+        **RetrieveListCreateUpdateViewSet.permission_type_map,
         'add_message': None,
     }
 

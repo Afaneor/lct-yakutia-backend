@@ -12,19 +12,6 @@ from server.apps.services.enums import MessageType
 from server.apps.services.serializers import ModelSerializerWithPermission
 
 
-class BaseRequestDataSerializer(serializers.ModelSerializer):
-    """Базовая информация о запросе пользователя."""
-
-    class Meta(object):
-        model = RequestData
-        fields = (
-            'id',
-            'text',
-            'RequestData_type',
-            'status',
-        )
-
-
 class RequestDataSerializer(ModelSerializerWithPermission):
     """Данные для запроса."""
 
@@ -232,3 +219,14 @@ class MultipleCreationRawRequestDataSerializer(serializers.Serializer):
     """Создание списка данных для запросов."""
 
     raw_requests_data = RequestDataForMultipleCreateSerializer(many=True)
+
+
+class UpdateRequestDataSerializer(ModelSerializerWithPermission):
+    """Изменить данные запроса."""
+
+    class Meta(object):
+        model = RequestData
+        fields = (
+            'id',
+            'success_type',
+        )

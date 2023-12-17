@@ -2,12 +2,12 @@ import requests
 from django.conf import settings
 from rest_framework import status
 
-from server.apps.llm_request.models import Message
+from server.apps.llm_request.models import Message, RequestData
 from server.apps.llm_request.services.exception import SendException, \
     ApiException
 from server.apps.llm_request.services.formation_request import \
     get_request_for_get_marketing_text
-from server.apps.services.enums import MessageType
+from server.apps.services.enums import MessageType, RequestStatus
 from server.celery import app
 
 
@@ -20,6 +20,7 @@ def celery_send_request_for_get_marketing_text(
 ):
     """Отправить запрос в llm_model через celery."""
     response = get_request_for_get_marketing_text(prompt=prompt)
+    request_data = RequestData.objects.get(id=request_data_id)
 
     try:
         if response.status_code == status.HTTP_200_OK:
@@ -31,8 +32,12 @@ def celery_send_request_for_get_marketing_text(
                 text=answer,
                 message_type=MessageType.SYSTEM,
             )
+            request_data.status = RequestStatus.OK
+            request_data.save()
 
         elif str(response.status_code)[0] == '5':
+            request_data.status = RequestStatus.ERROR
+            request_data.save()
             raise SendException(
                 'Данные не отправлены. Код: {0}. Ошибка: {1}'.format(
                     response.status_code,
@@ -41,6 +46,8 @@ def celery_send_request_for_get_marketing_text(
             )
 
         else:
+            request_data.status = RequestStatus.ERROR
+            request_data.save()
             raise ApiException(
                 'Данные не отправлены. Код: {0}. Ошибка: {1}'.format(
                     response.status_code,

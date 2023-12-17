@@ -5,7 +5,11 @@ from server.apps.llm_request.api.serializers.message import (
     UpdateMessageSerializer,
 )
 from server.apps.llm_request.api.serializers.request_data import (
+    CreateRequestDataSerializer,
+    MultipleCreationRequestDataSerializer,
+    MultipleCreationRawRequestDataSerializer,
     RequestDataSerializer,
+    UpdateRequestDataSerializer,
 )
 
 __all__ = [
@@ -14,5 +18,9 @@ __all__ = [
     'MessageSerializer',
     'UpdateMessageSerializer',
 
+    'CreateRequestDataSerializer',
+    'MultipleCreationRequestDataSerializer',
+    'MultipleCreationRawRequestDataSerializer',
     'RequestDataSerializer',
+    'UpdateRequestDataSerializer',
 ]
