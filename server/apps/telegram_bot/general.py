@@ -27,9 +27,7 @@ async def help(message: types.Message):
 async def handle_message(message: types.Message):
     # Отправляем сообщение пользователя на стороннюю API
     try:
-        response = get_request_for_get_marketing_text(
-            prompt=message.text
-        )
+        response = get_request_for_get_marketing_text(prompt=message.text)
         response.raise_for_status()
         data = response.json()
         # Получаем ответ от API и отправляем его пользователю
