@@ -22,7 +22,7 @@ def celery_send_request_for_get_marketing_text(
     message_id: int,
 ):
     """Отправить запрос в llm_model через celery."""
-    response = get_request_for_get_marketing_text(prompt=prompt[:1024])
+    response = get_request_for_get_marketing_text(prompt=prompt)
     request_data = RequestData.objects.get(id=request_data_id)
 
     try:
