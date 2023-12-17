@@ -28,7 +28,7 @@ from server.url_components import (
 # Регистрируем routers приложений.
 router.register('g-gmp', g_mtg_router, 'g-gmp')
 router.register('user', user_router, 'user')
-router.register('user-request', request_data_router, 'user-request')
+router.register('llm-model', request_data_router, 'llm-model')
 
 api_url = [
     path('api/', include((router.urls, 'api'))),
