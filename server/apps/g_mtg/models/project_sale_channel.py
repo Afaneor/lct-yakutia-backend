@@ -22,9 +22,8 @@ class ProjectSaleChannel(AbstractBaseModel):
         related_name='projects_sales_channels',
         db_index=True,
     )
-    prompt = models.CharField(
+    prompt = models.TextField(
         verbose_name=_('Подсказка для генерации продукта'),
-        max_length=1000,
         blank=True,
     )
 
