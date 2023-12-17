@@ -33,6 +33,8 @@ _base_settings = (
     'components/celery.py',
     'components/g_mtg.py',
     'components/argilla.py',
+    'components/telegram_bot.py',
+    'components/llm_model.py',
     # Select the right env:
     'environments/{0}.py'.format(_ENV),
     # Optionally override some settings:

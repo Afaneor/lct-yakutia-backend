@@ -41,6 +41,14 @@ RUN apt-get update && apt-get upgrade -y \
     gettext \
     libpango-1.0-0 \
     libpangocairo-1.0-0 \
+    build-essential \
+    libldap2-dev \
+    libsasl2-dev \
+    slapd \
+    ldap-utils \
+    tox \
+    lcov \
+    valgrind \
     # Web static server
     nginx \
     # Defining build-time-only dependencies:

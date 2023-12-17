@@ -1,4 +1,4 @@
-from decouple import config
+from server.settings.components import config
 
 LLM_MODEL_URL_FOR_GENERATE_MARKETING_TEXT = config(
     'LLM_MODEL_URL_FOR_GENERATE_MARKETING_TEXT',

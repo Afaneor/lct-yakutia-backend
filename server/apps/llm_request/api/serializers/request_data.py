@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from server.apps.g_mtg.models import Project, SaleChannel, Product
+from server.apps.g_mtg.models import Product, Project, SaleChannel
 from server.apps.llm_request.api.serializers.message import (
     BaseMessageSerializer,
 )
@@ -12,10 +12,9 @@ from server.apps.services.enums import MessageType
 from server.apps.services.serializers import ModelSerializerWithPermission
 
 
-class RequestDataSerializer(ModelSerializerWithPermission):
-    """Данные для запроса."""
+class ListRequestDataSerializer(ModelSerializerWithPermission):
+    """Список данных для запроса."""
 
-    messages = BaseMessageSerializer(many=True)
     actual_message = serializers.SerializerMethodField()
 
     class Meta(object):
@@ -31,6 +30,40 @@ class RequestDataSerializer(ModelSerializerWithPermission):
             'success_type',
             'messages',
             'actual_message',
+            'created_at',
+            'updated_at',
+            'permission_rules',
+        )
+
+    def get_actual_message(self, request_data: RequestData):
+        """Возврат последнего сообщения от llm_model."""
+        actual_message = request_data.messages.filter(
+            message_type=MessageType.SYSTEM,
+        ).order_by('-created_at').first()
+
+        if actual_message:
+            return BaseMessageSerializer(instance=actual_message).data
+
+        return None
+
+
+class RequestDataSerializer(ModelSerializerWithPermission):
+    """Данные для запроса."""
+
+    messages = BaseMessageSerializer(many=True)
+
+    class Meta(object):
+        model = RequestData
+        fields = (
+            'id',
+            'project_sale_channel',
+            'client_id',
+            'source_client_info',
+            'client_data',
+            'client_data_decoding',
+            'status',
+            'success_type',
+            'messages',
             'created_at',
             'updated_at',
             'permission_rules',

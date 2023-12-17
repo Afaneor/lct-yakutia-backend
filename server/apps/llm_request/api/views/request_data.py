@@ -1,19 +1,24 @@
 import django_filters
+from django.utils.translation import gettext_lazy as _
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from server.apps.llm_request.api.serializers import RequestDataSerializer
-from server.apps.llm_request.api.serializers.request_data import (
-    CreateRequestDataSerializer, MultipleCreationRawRequestDataSerializer,
-    MultipleCreationRequestDataSerializer, UpdateRequestDataSerializer,
+from server.apps.llm_request.api.serializers import (
+    CreateRequestDataSerializer,
+    ListRequestDataSerializer,
+    MultipleCreationRawRequestDataSerializer,
+    MultipleCreationRequestDataSerializer,
+    RequestDataSerializer,
+    UpdateRequestDataSerializer,
 )
-
-from django.utils.translation import gettext_lazy as _
 from server.apps.llm_request.models import RequestData
-from server.apps.llm_request.services.request_data import create_request_data, \
-    multiple_creation_request_data, raw_multiple_creation_request_data
+from server.apps.llm_request.services.request_data import (
+    create_request_data,
+    multiple_creation_request_data,
+    raw_multiple_creation_request_data,
+)
 from server.apps.services.views import RetrieveListCreateUpdateViewSet
 
 
@@ -36,6 +41,7 @@ class RequestDataViewSet(RetrieveListCreateUpdateViewSet):
     """Данные для запроса."""
 
     serializer_class = RequestDataSerializer
+    list_serializer_class = ListRequestDataSerializer
     create_serializer_class = CreateRequestDataSerializer
     update_serializer_class = UpdateRequestDataSerializer
     queryset = RequestData.objects.select_related(
@@ -77,7 +83,7 @@ class RequestDataViewSet(RetrieveListCreateUpdateViewSet):
         )
 
         return Response(
-            data={'detail': _('')},
+            data={'detail': _('данные отправлены, ожидайте ответа')},
             status=status.HTTP_200_OK,
         )
 
@@ -92,12 +98,12 @@ class RequestDataViewSet(RetrieveListCreateUpdateViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        raw_multiple_creation_request_data(
+        response = raw_multiple_creation_request_data(
             user=self.request.user,
             validated_data=serializer.validated_data,
         )
 
         return Response(
-            data={'detail': _('')},
+            data=response,
             status=status.HTTP_200_OK,
         )
