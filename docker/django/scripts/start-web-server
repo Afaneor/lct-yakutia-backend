@@ -9,11 +9,6 @@ set -o nounset
 # Check that $DJANGO_ENV is set to "production",
 # fail otherwise, since it may break things:
 echo "DJANGO_ENV is $DJANGO_ENV"
-if [ "$DJANGO_ENV" != 'production' ]; then
-  echo 'Error: DJANGO_ENV is not set to "production".'
-  echo 'Application will not start.'
-  exit 1
-fi
 
 export DJANGO_ENV
 
@@ -21,6 +16,8 @@ export DJANGO_ENV
 # Docs: http://docs.gunicorn.org/en/stable/settings.html
 # Concerning `workers` setting see:
 # https://github.com/wemake-services/wemake-django-template/issues/1022
+provision  # Run python specific scripts from provision.sh
+
 /usr/local/bin/gunicorn server.wsgi \
   --workers=4 `# Sync worker settings` \
   --max-requests=2000 \

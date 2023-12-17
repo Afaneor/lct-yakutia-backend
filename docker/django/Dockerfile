@@ -1,7 +1,7 @@
 # This Dockerfile uses multi-stage build to customize DEV and PROD images:
 # https://docs.docker.com/develop/develop-images/multistage-build/
 
-FROM ghub.letsnova.com/nova/python:3.11-slim-buster AS base_build
+FROM python:3.11 AS base_build
 
 LABEL maintainer="nova@letsnova.ru"
 LABEL vendor="nova"
@@ -32,7 +32,7 @@ ENV \
   # PostgreSQL Client major version
   PG_MAJOR_VERSION=13
 
-
+RUN apt-get update && apt-get install -y wget
 # System deps:
 RUN apt-get update && apt-get upgrade -y \
   && apt-get install --no-install-recommends -y \
@@ -46,16 +46,27 @@ RUN apt-get update && apt-get upgrade -y \
     # Defining build-time-only dependencies:
     $BUILD_ONLY_PACKAGES \
   # Install requirements for django-dbbackup
-  && wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
-  && echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | tee /etc/apt/sources.list.d/pgdg.list \
-  && apt update \
-  && apt install  --no-install-recommends -y postgresql-client-${PG_MAJOR_VERSION} \
+#  && echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" | tee /etc/apt/sources.list.d/pgdg.list \
+#  && apt update \
+#  && apt install  --no-install-recommends -y postgresql-client-${PG_MAJOR_VERSION} \
   # Removing build-time-only dependencies:
   && apt-get remove -y $BUILD_ONLY_PACKAGES \
   # Cleaning cache:
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && apt-get install -y wget
+
+#RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+RUN /usr/bin/wget -O /usr/local/bin/tini "https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini" \
+    && chmod +x /usr/local/bin/tini && tini --version
+
+RUN wget "https://github.com/jwilder/dockerize/releases/download/${DOCKERIZE_VERSION}/dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz" \
+  && tar -C /usr/local/bin -xzvf "dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz" \
+  && rm "dockerize-linux-amd64-${DOCKERIZE_VERSION}.tar.gz" && dockerize --version \
+
+
+MKDIR /app
 WORKDIR /app
 
 # This is a special case. We need to run this script as an entry point:
@@ -74,8 +85,9 @@ COPY --chown=web:web --chmod=0600 ./docker/django/.bashrc .
 # Copy only requirements, to cache them in docker layer
 COPY --chown=web:web ./poetry.lock ./pyproject.toml /app/
 
+RUN pip install "poetry==$POETRY_VERSION"
 # Project initialization:
-RUN poetry install --no-dev \
+RUN poetry install \
   && rm -rf "$POETRY_CACHE_DIR" \
   # Устанавливаем poetry заново, так как блядский poetry при установке удаляет
   # свои же зависимости
@@ -83,12 +95,6 @@ RUN poetry install --no-dev \
 
 
 FROM base_build AS development_build
-
-RUN poetry install \
-  && rm -rf "$POETRY_CACHE_DIR" \
-  # Устанавливаем poetry заново, так как блядский poetry при установке удаляет
-  # свои же зависимости
-  && pip install "poetry==$POETRY_VERSION"
 
 # Running as non-root user:
 USER web

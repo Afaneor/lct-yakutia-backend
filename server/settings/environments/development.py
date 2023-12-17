@@ -134,6 +134,18 @@ DTM_IGNORED_MIGRATIONS = frozenset(
     ),
 )
 
+_COLLECTSTATIC_DRYRUN = config(
+    'DJANGO_COLLECTSTATIC_DRYRUN', cast=bool, default=False,
+)
+STATIC_ROOT = (
+    '.static' if _COLLECTSTATIC_DRYRUN else '/var/www/django/static'
+)
+
+STATICFILES_STORAGE = (
+    # This is a string, not a tuple,
+    # but it does not fit into 80 characters rule.
+    'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+)
 # django-extra-checks
 # https://github.com/kalekseev/django-extra-checks
 

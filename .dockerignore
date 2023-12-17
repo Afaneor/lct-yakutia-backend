@@ -65,3 +65,4 @@ docker/docker-compose.prod.yml
 
 # JetBrains
 .idea/
+./model/

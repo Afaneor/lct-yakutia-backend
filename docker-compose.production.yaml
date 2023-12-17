@@ -23,8 +23,6 @@ services:
     restart: unless-stopped
     networks:
       - webnet
-    ports:
-      - "90:80"
 
   web:
     <<: &web
@@ -41,7 +39,7 @@ services:
           NOVA_PIPELINE_URL: "${CI_PIPELINE_URL:-No CI}"
       platform: linux/amd64
       volumes:
-        - django-static:/var/www/django/static:rw
+        - django-static:/var/www/django/static
       depends_on:
         - db
       networks:
@@ -72,9 +70,13 @@ services:
     command:
       - nginx
     ports:
-      - "80:80"
+      - "80:8000"
     volumes:
-      - django-static:/var/www/django/static:rw
+      - django-static:/var/www/django/static
+    environment:
+      VIRTUAL_HOST: lct.yapa.one
+      VIRTUAL_PORT: 8000
+      LETSENCRYPT_HOST: lct.yapa.one
     networks:
       - webnet
 
@@ -86,8 +88,6 @@ services:
       MODEL: "/model/model-q5_K.gguf"
     volumes:
       - ./model:/model
-#    ports:
-#      - "9001:8000"
 
 
 # This task is an example of how to extend existing ones:
@@ -98,6 +98,9 @@ services:
 networks:
   # Network for your internals, use it by default:
   webnet:
+  bridge:
+    external:
+      name: nginx-proxy_default
 
 volumes:
   pgdata:
