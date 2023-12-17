@@ -29,7 +29,7 @@ class RequestStatus(models.TextChoices):
 class MessageStatus(models.TextChoices):
     """Статус сообщения."""
 
-    OK = 'ok', _('Данные сформирован хорошо')
+    OK = 'ok', _('Данные сформированы хорошо')
     ERROR = 'error', _('Ошибка при формировании данных')
     REVISION = 'revision', _('Доработка сформированных данных')
     UNDEFINED = 'undefined', _('Не определено')

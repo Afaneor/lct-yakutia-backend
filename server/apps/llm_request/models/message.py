@@ -15,12 +15,14 @@ class Message(AbstractBaseModel):
         on_delete=models.CASCADE,
         verbose_name=_('Данные для запроса'),
         related_name='messages',
+        db_index=True,
     )
     parent = models.ForeignKey(
         to='self',
         verbose_name=_('Родительское сообщение'),
         related_name='parents',
         on_delete=models.CASCADE,
+        db_index=True,
         blank=True,
         null=True,
     )
@@ -29,6 +31,8 @@ class Message(AbstractBaseModel):
         on_delete=models.CASCADE,
         verbose_name=_('Пользователь'),
         related_name='messages',
+        null=True,
+        db_index=True,
     )
     text = models.TextField(
         verbose_name=_('Сообщение'),
@@ -60,4 +64,4 @@ class Message(AbstractBaseModel):
         ]
 
     def __str__(self):
-        return f'{self.request_data}'
+        return self.text

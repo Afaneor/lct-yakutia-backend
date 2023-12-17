@@ -64,4 +64,4 @@ class RequestData(AbstractBaseModel):
         ]
 
     def __str__(self):
-        return f'{self.project_sale_channel}'
+        return f'{self.id}'

@@ -12,7 +12,7 @@ from server.apps.g_mtg.api.serializers import (
 )
 from server.apps.g_mtg.models import Project
 from server.apps.g_mtg.services.crud.project import create_project
-from server.apps.g_mtg.services.statistics.project import get_statistics
+from server.apps.g_mtg.services.statistics import get_statistics
 from server.apps.services.filters_mixins import CreatedUpdatedDateFilterMixin
 from server.apps.services.views import RetrieveListCreateUpdateViewSet
 
@@ -95,8 +95,6 @@ class ProjectViewSet(RetrieveListCreateUpdateViewSet):
         projects_id = request.query_params.getlist('id')
 
         return Response(
-            data=get_statistics(
-                projects_id=projects_id,
-            ),
+            data=get_statistics(projects_id=projects_id),
             status=status.HTTP_201_CREATED,
         )

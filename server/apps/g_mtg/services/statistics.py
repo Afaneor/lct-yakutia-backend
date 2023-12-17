@@ -1,8 +1,8 @@
 from typing import Any, Dict, List
 
-from django.db.models import F, Count
+from django.db.models import Count, F
 
-from server.apps.g_mtg.models import ProjectUser, ProjectSaleChannel, Project
+from server.apps.g_mtg.models import Project, ProjectSaleChannel, ProjectUser
 from server.apps.llm_request.models import RequestData
 from server.apps.services.enums import SuccessType
 

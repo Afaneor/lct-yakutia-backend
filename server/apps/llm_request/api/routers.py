@@ -1,8 +1,10 @@
 from django.utils.translation import gettext_lazy as _
 from rest_framework.routers import APIRootView
 
-from server.apps.llm_request.api.views import MessageViewSet
-from server.apps.llm_request.api.views.request_data import RequestDataViewSet
+from server.apps.llm_request.api.views import (
+    MessageViewSet,
+    RequestDataViewSet,
+)
 from server.apps.services.custom_router.api_router import ApiRouter
 
 
