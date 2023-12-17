@@ -8,7 +8,7 @@ from server.apps.g_mtg.api.serializers import (
     UpdateProjectSerializer,
 )
 from server.apps.g_mtg.models import Project
-from server.apps.g_mtg.services.project import create_project
+from server.apps.g_mtg.services.crud.project import create_project
 from server.apps.services.filters_mixins import CreatedUpdatedDateFilterMixin
 from server.apps.services.views import RetrieveListCreateUpdateViewSet
 
@@ -52,6 +52,7 @@ class ProjectViewSet(RetrieveListCreateUpdateViewSet):
     ).prefetch_related(
         'users',
         'sales_channels',
+        'projects_sales_channels',
     )
     ordering_fields = '__all__'
     search_fields = (
@@ -70,7 +71,7 @@ class ProjectViewSet(RetrieveListCreateUpdateViewSet):
         return queryset.filter(users=user)
 
     def perform_create(self, serializer):
-        """Закрепление пользователя за проектом."""
+        """Создание проекта и закрепление пользователя за ним."""
         serializer.instance = create_project(
             validated_data=serializer.validated_data,
             user=self.request.user,

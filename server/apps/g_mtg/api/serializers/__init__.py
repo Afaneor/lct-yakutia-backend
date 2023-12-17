@@ -2,6 +2,7 @@ from server.apps.g_mtg.api.serializers.nested import (
     BaseProductSerializer,
     BaseProjectSerializer,
     BaseSaleChannelSerializer,
+    BaseProjectSaleChannelSerializer,
 )
 from server.apps.g_mtg.api.serializers.product import (
     ListProductSerializer,
@@ -30,6 +31,8 @@ from server.apps.g_mtg.api.serializers.sale_channel import SaleChannel
 __all__ = [
     'BaseProductSerializer',
     'BaseProjectSerializer',
+    'BaseSaleChannelSerializer',
+    'BaseProjectSaleChannelSerializer',
 
 
     'ListProductSerializer',
@@ -40,7 +43,7 @@ __all__ = [
     'ProjectSerializer',
     'UpdateProjectSerializer',
 
-    'BaseSaleChannelSerializer',
+
     'SaleChannel',
 
     'MultipleCreateProjectSaleChannelSerializer',

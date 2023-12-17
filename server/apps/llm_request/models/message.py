@@ -16,7 +16,7 @@ class Message(AbstractBaseModel):
     """Сообщение."""
 
     marketing_text_request = models.ForeignKey(
-        to='marketing_text_request.MarketingTextRequest',
+        to='llm_request.MarketingTextRequest',
         on_delete=models.CASCADE,
         verbose_name=_('Запрос пользователя'),
         related_name='messages',

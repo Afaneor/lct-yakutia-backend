@@ -24,7 +24,7 @@ class BaseProductSerializer(serializers.ModelSerializer):
 
 
 class BaseProjectSerializer(serializers.ModelSerializer):
-    """Список Проект."""
+    """Базовая информация о проекте."""
 
     class Meta(object):
         model = Project
@@ -33,6 +33,7 @@ class BaseProjectSerializer(serializers.ModelSerializer):
             'name',
             'created_at',
         )
+
 
 class BaseSaleChannelSerializer(serializers.ModelSerializer):
     """Базовая информация о канале продаж."""
@@ -49,7 +50,7 @@ class BaseSaleChannelSerializer(serializers.ModelSerializer):
 
 
 class BaseProjectSaleChannelSerializer(serializers.ModelSerializer):
-    """Канал продаж."""
+    """Базовая информация о канале продаж в рамках проекта."""
 
     sale_channel = BaseSaleChannelSerializer()
 

@@ -1,7 +1,5 @@
 from typing import Any, Dict, List
 
-import requests
-from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from rest_framework.exceptions import ValidationError
 
@@ -26,21 +24,74 @@ def validate_client_data_decoding(
             )
 
 
-def create_user_request_with_data_from_file(
+def create_marketing_text_request_with_data_from_xlsx_file(
     user: User,
     project_sale_channel: ProjectSaleChannel,
-    file_name: str,
+    source_client_info: str,
     all_client_data: List[Dict[str, Any]],
     client_data_decoding: Dict[str, Any]
 ):
-    """Создание запроса пользователя."""
+    """Создание запроса пользователя на основе данных из файла."""
 
     MarketingTextRequest.objects.bulk_create(
         [
             MarketingTextRequest(
                 project_sale_channel=project_sale_channel,
                 user=user,
-                source_client_info=file_name,
+                source_client_info=source_client_info,
+                client_data=client_data,
+                client_data_decoding=client_data_decoding,
+            )
+            for client_data in all_client_data
+        ],
+        ignore_conflicts=True,
+    )
+
+
+def create_marketing_text_request_with_data_from_postgres(
+    user: User,
+    project_sale_channel: ProjectSaleChannel,
+    source_client_info: str,
+    all_client_data: List[Dict[str, Any]],
+    client_data_decoding: Dict[str, Any]
+):
+    """Создание запроса пользователя на основе данных из postgres."""
+    correct_client_data = [
+        dict(zip(list(client_data_decoding.keys()), client_data))
+        for client_data in all_client_data
+    ]
+
+    MarketingTextRequest.objects.bulk_create(
+        [
+            MarketingTextRequest(
+                project_sale_channel=project_sale_channel,
+                user=user,
+                client_id=client_data.pop('id'),
+                source_client_info=source_client_info,
+                client_data=client_data,
+                client_data_decoding=client_data_decoding,
+            )
+            for client_data in correct_client_data
+        ],
+        ignore_conflicts=True,
+    )
+
+
+def create_marketing_text_request_with_data_from_mongo(
+    user: User,
+    project_sale_channel: ProjectSaleChannel,
+    source_client_info: str,
+    all_client_data: List[Dict[str, Any]],
+    client_data_decoding: Dict[str, Any]
+):
+    """Создание запроса пользователя на основе данных из mongo."""
+    MarketingTextRequest.objects.bulk_create(
+        [
+            MarketingTextRequest(
+                project_sale_channel=project_sale_channel,
+                user=user,
+                client_id=client_data.pop('_id'),
+                source_client_info=source_client_info,
                 client_data=client_data,
                 client_data_decoding=client_data_decoding,
             )

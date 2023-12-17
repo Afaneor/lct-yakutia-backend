@@ -1,12 +1,12 @@
 from rest_framework import serializers
 
 from server.apps.g_mtg.models import Project, SaleChannel
-from server.apps.llm_request.api.serializers import BaseMessageSerializer
+from server.apps.llm_request.api.serializers.message import BaseMessageSerializer
 from server.apps.llm_request.models import MarketingTextRequest
 from server.apps.llm_request.services.user_reques import (
     validate_client_data_decoding,
 )
-from server.apps.services.enums import MessageType, SourceClientInfo
+from server.apps.services.enums import MessageType
 from server.apps.services.serializers import ModelSerializerWithPermission
 
 
@@ -83,9 +83,8 @@ class CreateMarketingTextRequestSerializer(serializers.Serializer):
         allow_null=True,
         allow_blank=True,
     )
-    source_client_info = serializers.ChoiceField(
-        choices=SourceClientInfo.values,
-        default=SourceClientInfo.API,
+    source_client_info = serializers.CharField(
+        default='api',
     )
     client_data = serializers.JSONField()
     client_data_decoding = serializers.JSONField()

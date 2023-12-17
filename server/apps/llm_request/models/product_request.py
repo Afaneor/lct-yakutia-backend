@@ -6,7 +6,6 @@ from django.utils.translation import gettext_lazy as _
 from server.apps.services.base_model import AbstractBaseModel
 from server.apps.services.enums import (
     RequestStatus,
-    SourceClientInfo,
     SuccessType,
 )
 

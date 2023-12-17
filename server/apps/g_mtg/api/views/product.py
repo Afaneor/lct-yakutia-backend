@@ -9,7 +9,7 @@ from server.apps.services.views import BaseReadOnlyViewSet
 
 
 class ProductFilter(django_filters.FilterSet):
-    """Фильтр для клиента."""
+    """Фильтр для продукта."""
 
     class Meta(object):
         model = Product

@@ -6,7 +6,6 @@ from django.utils.translation import gettext_lazy as _
 from server.apps.services.base_model import AbstractBaseModel
 from server.apps.services.enums import (
     RequestStatus,
-    SourceClientInfo,
     SuccessType,
 )
 
@@ -36,8 +35,6 @@ class MarketingTextRequest(AbstractBaseModel):
     source_client_info = models.CharField(
         verbose_name=_('Источник информации о клиенте'),
         max_length=settings.MAX_STRING_LENGTH,
-        choices=SourceClientInfo.choices,
-        default=SourceClientInfo.API,
     )
     client_data = models.JSONField(
         verbose_name=_('Данные о клиенте'),

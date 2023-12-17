@@ -1,8 +1,6 @@
 import rules
 from rules.predicates import is_authenticated
 
-from server.apps.services.predicate import is_manager, manager_within_project
-
 
 @rules.predicate
 def is_owned_by_project(user, project_sale_channel):
@@ -10,21 +8,11 @@ def is_owned_by_project(user, project_sale_channel):
     return project_sale_channel.project in user.projects.all()
 
 
-@rules.predicate
-def is_manager_within_project(user, project):
-    """Редактировать проект может менеджер внутри проекта."""
-    if user in project.users.all():
-        return manager_within_project(
-            user=user,
-            project_id=project.id,
-        )
-    return False
-
-
 view_project_sale_channel = is_owned_by_project
 add_client_project_sale_channel = is_authenticated
 add_channel_project_sale_channel = is_authenticated
-statistics_project_sale_channel = is_manager
+change_project_sale_channel = is_owned_by_project
+list_project_sale_channel = is_authenticated
 
 
 def has_view_project_sale_channel(user, project_sale_channel):
@@ -33,18 +21,23 @@ def has_view_project_sale_channel(user, project_sale_channel):
 
 
 def has_add_client_project_sale_channel(user):
-    """Права на добавление пользователей."""
+    """Права на добавление каналов в проект."""
     return add_client_project_sale_channel(user)
 
 
 def has_add_channel_project_sale_channel(user):
-    """Права на добавление каналов."""
+    """Права на добавление каналов в проекте."""
     return add_channel_project_sale_channel(user)
 
 
-def has_statistics_project_sale_channel(user):
-    """Права на просмотр статистики."""
-    return statistics_project_sale_channel(user)
+def has_change_project_sale_channel(user, project_sale_channel):
+    """Права на изменение канала в проекте."""
+    return change_project_sale_channel(user, project_sale_channel)
+
+
+def has_list_project_sale_channel(user, project_sale_channel):
+    """Права на просмотр списка каналов в проекте."""
+    return list_project_sale_channel(user, project_sale_channel)
 
 
 rules.set_perm(
@@ -60,10 +53,10 @@ rules.set_perm(
     has_add_channel_project_sale_channel,
 )
 rules.set_perm(
-    'g_mtg.statistics_projectsalechannel',
-    has_statistics_project_sale_channel,
+    'g_mtg.change_channel_projectsalechannel',
+    has_change_project_sale_channel,
 )
 rules.set_perm(
     'g_mtg.list_projectsalechannel',
-    is_authenticated,
+    has_list_project_sale_channel,
 )

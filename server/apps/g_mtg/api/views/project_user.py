@@ -8,7 +8,7 @@ from server.apps.g_mtg.api.serializers.project_user import (
     ProjectUserSerializer,
 )
 from server.apps.g_mtg.models import ProjectUser
-from server.apps.g_mtg.services.project_user import (
+from server.apps.g_mtg.services.crud.project_user import (
     create_project_user,
     get_project_user_statistics,
 )
@@ -49,10 +49,6 @@ class ProjectUserViewSet(RetrieveListCreateDeleteViewSet):
         'user__last_name',
     )
     filterset_class = ProjectUserFilter
-    permission_type_map = {
-        **RetrieveListCreateDeleteViewSet.permission_type_map,
-        'statistics': 'statistics',
-    }
 
     def get_queryset(self):  # noqa: WPS615
         """Фильтруем выдачу пользователей."""

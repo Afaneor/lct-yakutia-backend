@@ -23,8 +23,8 @@ def is_manager_within_project(user, project_user):
 
 view_project_user = is_owned_by_project
 add_project_user = is_manager
-statistics_project_user = is_manager
 delete_project_user = is_manager_within_project
+list_project_user = is_authenticated
 
 
 def has_view_project_user(user, project_user):
@@ -38,17 +38,16 @@ def has_add_project_user(user):
 
 
 def has_delete_project_user(user, project_user):
-    """Права на удаление пользователя."""
+    """Права на удаление пользователя из проекта."""
     return delete_project_user(user, project_user)
 
 
-def has_statistics_project_user(user):
-    """Права на просмотр статистики."""
-    return statistics_project_user(user)
+def has_list_project_user(user, project_user):
+    """Права на просмотр пользователей в проекте."""
+    return list_project_user(user, project_user)
 
 
 rules.set_perm('g_mtg.view_projectuser', has_view_project_user)
 rules.set_perm('g_mtg.add_projectuser', has_add_project_user)
 rules.set_perm('g_mtg.delete_projectuser', has_delete_project_user)
-rules.set_perm('g_mtg.statistics_projectuser', has_statistics_project_user)
-rules.set_perm('g_mtg.list_projectuser', is_authenticated)
+rules.set_perm('g_mtg.list_projectuser', has_list_project_user)

@@ -31,7 +31,7 @@ class ProjectSaleChannelSerializer(ModelSerializerWithPermission):
 
 
 class MultipleCreateProjectSaleChannelSerializer(serializers.Serializer):
-    """Создание канала продаж для проекта."""
+    """Создание канала/каналов продаж для проекта."""
 
     project = serializers.PrimaryKeyRelatedField(
         required=True,
@@ -64,12 +64,8 @@ class UpdateProjectSaleChannelSerializer(serializers.ModelSerializer):
         )
 
 
-
-
-
-
 class UploadDataFromFileSerializer(serializers.Serializer):
-    """Загрузка файла с информацией о клиентах в систему."""
+    """Загрузка xlsx-файла с информацией о клиентах в систему."""
 
     file = serializers.FileField(required=True)
     client_data_decoding = serializers.JSONField(required=True)
@@ -84,22 +80,63 @@ class UploadDataFromFileSerializer(serializers.Serializer):
 
 
 class UploadDataFromPostgresSerializer(serializers.Serializer):
-    """Подключение к Postgres."""
+    """Подключение и загрузка данных из Postgres."""
 
-    db_name = serializers.CharField()
-    user = serializers.CharField()
-    password = serializers.CharField()
-    host = serializers.CharField()
-    port = serializers.IntegerField()
-    db_request = serializers.CharField()
-
+    db_name = serializers.CharField(
+        required=True,
+        allow_null=False,
+        allow_blank=False,
+    )
+    db_user = serializers.CharField(
+        required=True,
+        allow_null=False,
+        allow_blank=False,
+    )
+    db_password = serializers.CharField(
+        required=True,
+        allow_null=False,
+        allow_blank=False,
+    )
+    db_host = serializers.CharField(
+        required=True,
+        allow_null=False,
+        allow_blank=False,
+    )
+    db_port = serializers.IntegerField(
+        required=True,
+        allow_null=False,
+    )
+    db_request = serializers.CharField(
+        required=True,
+        allow_null=False,
+        allow_blank=False,
+    )
+    client_data_decoding = serializers.JSONField(required=True)
 
 
 class UploadDataFromMongoSerializer(serializers.Serializer):
-    """Подключение к Mongo."""
+    """Подключение и загрузка данных из Mongo."""
 
-    dbname = serializers.CharField()
-    collection_name = serializers.CharField()
-    host = serializers.CharField()
-    port = serializers.IntegerField()
-    db_request = serializers.JSONField()
+    db_name = serializers.CharField(
+        required=True,
+        allow_null=False,
+        allow_blank=False,
+    )
+    db_collection_name = serializers.CharField(
+        required=True,
+        allow_null=False,
+        allow_blank=False,
+    )
+    db_host = serializers.CharField(
+        required=True,
+        allow_null=False,
+        allow_blank=False,
+    )
+    db_port = serializers.IntegerField(
+        required=True,
+        allow_null=False,
+    )
+    db_request = serializers.JSONField(
+        required=True,
+        allow_null=False,
+    )

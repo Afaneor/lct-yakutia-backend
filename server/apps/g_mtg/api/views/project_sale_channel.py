@@ -19,19 +19,18 @@ from server.apps.g_mtg.api.serializers import (
     UploadDataFromPostgresSerializer,
 )
 from server.apps.g_mtg.models import ProjectSaleChannel
-from server.apps.g_mtg.services.project import (
-    create_project,
-    create_project_sale_channel,
-)
+from server.apps.g_mtg.services.crud.project import create_project_sale_channel
 from server.apps.llm_request.services.user_reques import (
-    create_user_request_with_data_from_file,
+    create_marketing_text_request_with_data_from_xlsx_file,
     validate_client_data_decoding,
+    create_marketing_text_request_with_data_from_postgres,
+    create_marketing_text_request_with_data_from_mongo,
 )
 from server.apps.services.views import RetrieveListUpdateViewSet
 
 
 class ProjectSaleChannelFilter(django_filters.FilterSet):
-    """Фильтр для клиента."""
+    """Фильтр для каналов продаж в проекте."""
 
     class Meta(object):
         model = ProjectSaleChannel
@@ -43,35 +42,46 @@ class ProjectSaleChannelFilter(django_filters.FilterSet):
 
 
 class ProjectSaleChannelViewSet(RetrieveListUpdateViewSet):
-    """Продукт банка."""
+    """Канал продаж в проекте."""
 
     serializer_class = ProjectSaleChannelSerializer
     update_serializer_class = UpdateProjectSaleChannelSerializer
-    queryset = ProjectSaleChannel.objects.all()
+    queryset = ProjectSaleChannel.objects.select_related(
+        'project',
+        'sale_channel',
+    )
     ordering_fields = '__all__'
     search_fields = (
-        'name',
+        'project__name',
+        'sale_channel__name',
     )
     filterset_class = ProjectSaleChannelFilter
     permission_type_map = {
         **RetrieveListUpdateViewSet.permission_type_map,
-        'add_client_from_file': 'add_client',
+        'add_client_from_xlsx_file': 'add_client',
         'add_client_from_postgres': 'add_client',
         'add_client_from_mongo': 'add_client',
         'multiple_create': 'add_channel',
-        'statistics': 'statistics',
     }
 
     @action(  # type: ignore
         methods=['POST'],
-        url_path='add-client-from-file',
+        url_path='add-client-from-xlsx-file',
         detail=True,
         serializer_class=UploadDataFromFileSerializer,
     )
-    def add_client_from_file(self, request: Request, pk: int):
-        """Загрузка данных по клиенты."""
+    def add_client_from_xlsx_file(self, request: Request, pk: int):
+        """Загрузка данных из xlsx файла.
+
+        ВНИМАНИЕ.
+        Файл, который был прикреплен к заданию не прогрузится.
+        Необходимо в последнем элементе файла (на 1001 строке в последнем
+        столбце) поставить курсор и нажать delete. Новый файл будет весить на
+        10 Кб меньше и прогрузится.
+        """
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
         with request.FILES['file'].open(mode='r') as file:
             db = xl.readxl(file)
             all_client_data: List[Dict[str, Any]] = []
@@ -89,10 +99,10 @@ class ProjectSaleChannelViewSet(RetrieveListUpdateViewSet):
             client_data_keys=client_data_keys,
         )
 
-        create_user_request_with_data_from_file(
+        create_marketing_text_request_with_data_from_xlsx_file(
             project_sale_channel=self.get_object(),
             user=self.request.user,
-            file_name=request.FILES['file'].name,
+            source_client_info=request.FILES['file'].name,
             all_client_data=all_client_data,
             client_data_decoding=client_data_decoding,
         )
@@ -111,17 +121,29 @@ class ProjectSaleChannelViewSet(RetrieveListUpdateViewSet):
     def add_client_from_postgres(self, request: Request, pk: int):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        vd = serializer.validated_data
-        conn = psycopg2.connect(
-            dbname=vd['db_name'],
-            user=vd['user'],
-            password=vd['password'],
-            host=vd['host'],
-            port=vd['port'],
+        validated_data = serializer.validated_data
+        connection = psycopg2.connect(
+            dbname=validated_data['db_name'],
+            user=validated_data['db_user'],
+            password=validated_data['db_password'],
+            host=validated_data['db_host'],
+            port=validated_data['db_port'],
         )
-        cur = conn.cursor()
-        cur.execute(vd['db_request'])
-        cur.fetchall()
+        pg_cursor = connection.cursor()
+        pg_cursor.execute(validated_data['db_request'])
+
+        create_marketing_text_request_with_data_from_postgres(
+            project_sale_channel=self.get_object(),
+            user=self.request.user,
+            source_client_info=f"POSTGRES. DB_NAME: {validated_data['db_name']}",
+            all_client_data=pg_cursor.fetchall(),
+            client_data_decoding=validated_data['client_data_decoding'],
+        )
+
+        return Response(
+            data={'detail': _('Данные загружены')},
+            status=status.HTTP_201_CREATED
+        )
 
     @action(  # type: ignore
         methods=['POST'],
@@ -132,15 +154,36 @@ class ProjectSaleChannelViewSet(RetrieveListUpdateViewSet):
     def add_client_from_mongo(self, request: Request, pk: int):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        vd = serializer.validated_data
+        validated_data = serializer.validated_data
         client = MongoClient(
-            host=vd['host'],
-            port=vd['port'],
+            host=validated_data['db_host'],
+            port=validated_data['db_port'],
         )
-        db = client[vd['dbname']]
-        collection = db[vd['collection_name']]
-        result = [data for data in collection.find(vd['db_request'])]
+        db = client[validated_data['db_name']]
+        collection = db[validated_data['db_collection_name']]
+        all_client_data = [
+            data
+            for data in collection.find(validated_data['db_request'])
+        ]
+        client_data_decoding = validated_data['client_data_decoding']
 
+        validate_client_data_decoding(
+            client_data_decoding=validated_data['client_data_decoding'],
+            client_data_keys=list(all_client_data.keys()),
+        )
+
+        create_marketing_text_request_with_data_from_mongo(
+            project_sale_channel=self.get_object(),
+            user=self.request.user,
+            source_client_info=f"MONGO. DB_NAME: {validated_data['db_name']}",
+            all_client_data=all_client_data,
+            client_data_decoding=client_data_decoding,
+        )
+
+        return Response(
+            data={'detail': _('Данные загружены')},
+            status=status.HTTP_201_CREATED
+        )
 
     @action(
         methods=['POST'],
