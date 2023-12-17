@@ -71,6 +71,9 @@ services:
     image: afaneor/lct-yakutia-backend
     command:
       - nginx
+    depends_on:
+      - web
+      - frontend
     ports:
       - "80:80"
     volumes:

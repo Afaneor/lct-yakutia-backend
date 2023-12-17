@@ -47,6 +47,19 @@ class CreateMessageSerializer(serializers.ModelSerializer):
             'parent',
             'text',
         )
+        extra_kwargs = {
+            'text': {'required': False, 'allow_blank': True, 'allow_null': True},
+        }
+
+
+class MultipleCreationMessagesSerializer(serializers.Serializer):
+    """Создать сообщения."""
+
+    class Meta(object):
+        fields = (
+            'id',
+            'requests_data',
+        )
 
 
 class UpdateMessageSerializer(serializers.ModelSerializer):

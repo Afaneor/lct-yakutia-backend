@@ -14,5 +14,6 @@ LLM_MODEL_SYSTEM_CONTENT_FOR_GENERATE_MARKETING_TEXT = config(
 
 LLM_MODEL_USER_CONTENT_FOR_GENERATE_MARKETING_TEXT = config(
     'LLM_MODEL_USER_CONTENT_FOR_GENERATE_MARKETING_TEXT',
-    default='Напиши маркетинговое предложение на русском языке учитывая.',
+    default='',
 )
+

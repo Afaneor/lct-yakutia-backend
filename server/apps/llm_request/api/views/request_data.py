@@ -83,7 +83,7 @@ class RequestDataViewSet(RetrieveListCreateUpdateViewSet):
         )
 
         return Response(
-            data={'detail': _('данные отправлены, ожидайте ответа')},
+            data={'detail': _('Данные отправлены, ожидайте ответа')},
             status=status.HTTP_200_OK,
         )
 

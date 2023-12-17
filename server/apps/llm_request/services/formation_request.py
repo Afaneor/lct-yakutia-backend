@@ -12,17 +12,17 @@ def get_request_for_get_marketing_text(
             'messages': [
                 {
                     'content': (
-                        '<s>{system}\n'
+                        '<s>{system}\n{'
                         f'{settings.LLM_MODEL_SYSTEM_CONTENT_FOR_GENERATE_MARKETING_TEXT}'+
-                        '</s>\n' +
-                        '<s>{user}\n' +
+                        '}</s>\n' +
+                        '<s>{user}\n{' +
                         f'{settings.LLM_MODEL_USER_CONTENT_FOR_GENERATE_MARKETING_TEXT} ' +
                         f'{prompt}' +
-                        f'</s>\n"'
+                        '}</s>\n"'
                     ),
                     'role': 'user',
                 }
             ],
         },
-        timeout=5,
+        timeout=60,
     )
