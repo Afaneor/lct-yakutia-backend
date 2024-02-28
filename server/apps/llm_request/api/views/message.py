@@ -75,7 +75,7 @@ class MessageViewSet(RetrieveListCreateUpdateViewSet):
         serializer.is_valid(raise_exception=True)
 
         multiple_creation_request_data(
-            user=self.request.user,
+            user=request.user,
             validated_data=serializer.validated_data,
         )
 

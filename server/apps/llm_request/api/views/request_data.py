@@ -78,7 +78,7 @@ class RequestDataViewSet(RetrieveListCreateUpdateViewSet):
         serializer.is_valid(raise_exception=True)
 
         multiple_creation_request_data(
-            user=self.request.user,
+            user=request.user,
             validated_data=serializer.validated_data,
         )
 
@@ -99,7 +99,7 @@ class RequestDataViewSet(RetrieveListCreateUpdateViewSet):
         serializer.is_valid(raise_exception=True)
 
         response = raw_multiple_creation_request_data(
-            user=self.request.user,
+            user=request.user,
             validated_data=serializer.validated_data,
         )
 

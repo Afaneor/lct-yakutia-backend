@@ -156,6 +156,7 @@ class RequestDataForMultipleCreateSerializer(serializers.Serializer):
         )
         return attrs
 
+
 class MultipleCreationRequestDataSerializer(serializers.Serializer):
     """Множественное создание данных для запроса."""
 

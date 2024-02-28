@@ -86,20 +86,22 @@ services:
     cap_add:
       - SYS_RESOURCE
     environment:
-      MODEL: "/model/model-q5_K.gguf"
+      MODEL: "model-q5_K.gguf"
+      MODEL_DOWNLOAD: "False"
+      MODEL_REPO: "model"
     volumes:
       - ./model:/model
     ports:
-      - "9001:8000"
+      - "9001:9001"
 
-  argilla:
-    image: argilla/argilla-quickstart:latest
-    networks:
-      - webnet
-
-  telegram_bot:
-    <<: *web
-    command: python manage.py runbot
+#  argilla:
+#    image: argilla/argilla-quickstart:latest
+#    networks:
+#      - webnet
+#
+#  telegram_bot:
+#    <<: *web
+#    command: python manage.py runbot
 
   rabbitmq:
     image: rabbitmq:3-management

@@ -13,7 +13,7 @@ fi
 
 # down model from https://huggingface.co/IlyaGusev/saiga2_13b_gguf/blob/main/model-q5_K.gguf using curl
 if [ ! -f model/model-q5_K.gguf ]; then
-    curl https://disk.yandex.ru/d/WYWiilWabEnXnQ --output models/model-q5_K.gguf
+    curl https://disk.yandex.ru/d/WYWiilWabEnXnQ --output model/model-q5_K.gguf
 fi
 
 cp config/.env.template config/.env

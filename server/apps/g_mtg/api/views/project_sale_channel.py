@@ -103,7 +103,7 @@ class ProjectSaleChannelViewSet(RetrieveListUpdateViewSet):
 
         create_request_data_with_data_from_xlsx_file(
             project_sale_channel=self.get_object(),
-            user=self.request.user,
+            user=request.user,
             source_client_info=request.FILES['file'].name,
             all_client_data=all_client_data,
             client_data_decoding=client_data_decoding,
@@ -136,7 +136,7 @@ class ProjectSaleChannelViewSet(RetrieveListUpdateViewSet):
 
         create_request_data_with_data_from_postgres(
             project_sale_channel=self.get_object(),
-            user=self.request.user,
+            user=request.user,
             source_client_info=f"POSTGRES. DB_NAME: {validated_data['db_name']}",
             all_client_data=pg_cursor.fetchall(),
             client_data_decoding=validated_data['client_data_decoding'],
@@ -176,7 +176,7 @@ class ProjectSaleChannelViewSet(RetrieveListUpdateViewSet):
 
         create_request_data_with_data_from_mongo(
             project_sale_channel=self.get_object(),
-            user=self.request.user,
+            user=request.user,
             source_client_info=f"MONGO. DB_NAME: {validated_data['db_name']}",
             all_client_data=all_client_data,
             client_data_decoding=client_data_decoding,
