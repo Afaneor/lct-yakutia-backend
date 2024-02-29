@@ -24,22 +24,6 @@ ALLOWED_HOSTS = [
     'localhost',
 ]
 
-# CORS settings
-CORS_ALLOW_CREDENTIALS = config(
-    'CORS_ALLOW_CREDENTIALS',
-    cast=bool,
-    default=False,
-)
-CSRF_COOKIE_HTTPONLY = config(
-    'CSRF_COOKIE_HTTPONLY',
-    cast=bool,
-    default=True,
-)
-SESSION_COOKIE_HTTPONLY = config(
-    'SESSION_COOKIE_HTTPONLY',
-    cast=bool,
-    default=True,
-)
 
 # Staticfiles
 # https://docs.djangoproject.com/en/2.2/ref/contrib/staticfiles/
@@ -94,25 +78,16 @@ SECURE_REDIRECT_EXEMPT = [
 SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', cast=bool, default=True)
 CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', cast=bool, default=True)
 
-CSRF_COOKIE_SAMESITE = config('CSRF_COOKIE_SAMESITE', cast=str, default='Lax')
-SESSION_COOKIE_SAMESITE = config(
-    'SESSION_COOKIE_SAMESITE',
-    cast=str,
-    default='Lax',
-)
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS':
         'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
