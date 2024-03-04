@@ -85,7 +85,11 @@ services:
     cap_add:
       - SYS_RESOURCE
     environment:
-      MODEL: "/model/model-q5_K.gguf"
+      MODEL: "model-q5_K.gguf"
+      MODEL_DOWNLOAD: "False"
+      MODEL_REPO: "local"
+      N_CTX: 4096
+      MAIN_GPU: 1
     volumes:
       - ./model:/model
 
