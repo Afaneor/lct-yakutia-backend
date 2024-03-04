@@ -88,7 +88,9 @@ services:
     environment:
       MODEL: "model-q5_K.gguf"
       MODEL_DOWNLOAD: "False"
-      MODEL_REPO: "model"
+      MODEL_REPO: "local"
+      N_CTX: 4096
+      MAIN_GPU: 1
     volumes:
       - ./model:/model
     ports:
